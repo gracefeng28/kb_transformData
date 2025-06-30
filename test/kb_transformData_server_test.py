@@ -9,6 +9,8 @@ from kb_transformData.kb_transformDataServer import MethodContext
 from kb_transformData.authclient import KBaseAuth as _KBaseAuth
 
 from installed_clients.WorkspaceClient import Workspace
+from installed_clients.DataFileUtilClient import DataFileUtil
+
 
 
 class kb_transformDataTest(unittest.TestCase):
@@ -43,7 +45,7 @@ class kb_transformDataTest(unittest.TestCase):
         cls.scratch = cls.cfg['scratch']
         cls.callback_url = os.environ['SDK_CALLBACK_URL']
         suffix = int(time.time() * 1000)
-        cls.wsName = "test_ContigFilter_" + str(suffix)
+        cls.wsName = "gracefeng:narrative_" + str(suffix)
         ret = cls.wsClient.create_workspace({'workspace': cls.wsName})  # noqa
 
     @classmethod
@@ -63,6 +65,4 @@ class kb_transformDataTest(unittest.TestCase):
         #
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods
-        ret = self.serviceImpl.run_kb_transformData(self.ctx, {'workspace_name': self.wsName,
-                                                             'phenotype_data': '174775/3/2',
-                                                             'transform_type': 'sqrt'})
+        ret = self.serviceImpl.run_kb_transformData(self.ctx, {'workspace_name': 'gracefeng:narrative_1751308811409', 'transform_type': 'sqrt', 'phenotype_data': '221461/3/1'})

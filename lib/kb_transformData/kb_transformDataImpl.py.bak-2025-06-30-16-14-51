@@ -5,9 +5,6 @@ import os
 
 from installed_clients.KBaseReportClient import KBaseReport
 from installed_clients.VariationUtilClient import VariationUtil
-from installed_clients.WorkspaceClient import Workspace
-from installed_clients.DataFileUtilClient import DataFileUtil
-
 #END_HEADER
 
 
@@ -28,7 +25,7 @@ class kb_transformData:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/gracefeng28/kb_transformData.git"
-    GIT_COMMIT_HASH = "ac130f03f88c434f82964371be87df49b254466f"
+    GIT_COMMIT_HASH = "d10972f8558d224f27716be5bc3a426826e88a56"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -39,7 +36,6 @@ class kb_transformData:
         #BEGIN_CONSTRUCTOR
         self.config = config
         self.callback_url = os.environ['SDK_CALLBACK_URL']
-        self.dfu = DataFileUtil(self.callback_url)
         self.shared_folder = config['scratch']
         logging.basicConfig(format='%(created)s %(levelname)s: %(message)s',
                             level=logging.INFO)
@@ -52,8 +48,8 @@ class kb_transformData:
         This example function accepts any number of parameters and returns results in a KBaseReport
         :param params: instance of type "transformDataInput" -> structure:
            parameter "workspace_name" of String, parameter "transform_type"
-           of String, parameter "phenotype_data" of type "var_ref" (KBase
-           style object reference X/Y/Z to a @id ws KBaseGwasData.Variations)
+           of String, parameter "variation" of type "var_ref" (KBase style
+           object reference X/Y/Z to a @id ws KBaseGwasData.Variations)
         :returns: instance of type "ReportResults" -> structure: parameter
            "report_name" of String, parameter "report_ref" of String,
            parameter "transformed_var" of type "var_ref" (KBase style object
@@ -67,8 +63,6 @@ class kb_transformData:
             raise ValueError('Phenotype Data Kbase reference is not set')
         if 'transform_type' not in params:
             raise ValueError('Transformation type is not selected.')
-        #w = Workspace(self.callback_url)
-        #print(w.get_workspace_description('gracefeng:narrative_1751308811409'))
 
         logging.info("Downloading phenotype data from shock.")
         if os.path.exists(params['phenotype_data']):
@@ -76,8 +70,8 @@ class kb_transformData:
         else:
             variations = VariationUtil(self.callback_url)
             variation_info = variations.get_variation_as_vcf({
-                'variation_ref': params['phenotype_data'],
-                'filename': os.path.join(self.shared_folder, 'phenotype_data.vcf')
+                'variation_ref': params['phenotype_data']
+         #       'filename': os.path.join(self.shared_folder, 'phenotype_data.vcf')
             })
         
         output = {}

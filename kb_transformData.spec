@@ -14,7 +14,7 @@ module kb_transformData {
 	typedef structure {
 	    string workspace_name;
 	    string transform_type;
-		var_ref variation;
+		var_ref phenotype_data;
 	} transformDataInput;
 
     typedef structure {
