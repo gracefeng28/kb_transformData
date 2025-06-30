@@ -20,6 +20,35 @@
             "text_options": {
                 "valid_ws_types": [ "KBaseExperiments.AttributeMapping"]
             }
+        },{
+            "id": "transform_type",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "box-cox" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+                "options": [
+                    {
+                        "value": "box-cox",
+                        "display": "Box-Cox",
+                        "id": "box-cox",
+                        "ui_name": "Box-Cox"
+                    },
+                    {
+                        "value": "sqrt",
+                        "display": "Square Root",
+                        "id": "sqrt",
+                        "ui_name": "Square Root"
+                    },
+                    {
+                        "value": "log",
+                        "display": "Logarithmic",
+                        "id": "log",
+                        "ui_name": "Logarithmic"
+                    }
+                ]
+            }
         }
     ],
     "behavior": {
@@ -37,6 +66,9 @@
                 },{
                     "input_parameter": "phenotype_data",
                     "target_property": "phenotype_data"
+                },{
+                    "input_parameter": "transform_type",
+                    "target_property": "transform_type"
                 }
             ],
             "output_mapping": [

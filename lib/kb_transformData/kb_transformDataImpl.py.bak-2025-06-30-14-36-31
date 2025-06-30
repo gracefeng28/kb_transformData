@@ -45,14 +45,9 @@ class kb_transformData:
     def run_kb_transformData(self, ctx, params):
         """
         This example function accepts any number of parameters and returns results in a KBaseReport
-        :param params: instance of type "transformDataInput" -> structure:
-           parameter "workspace_name" of String, parameter "transform_type"
-           of String, parameter "variation" of type "var_ref" (KBase style
-           object reference X/Y/Z to a @id ws KBaseGwasData.Variations)
+        :param params: instance of mapping from String to unspecified object
         :returns: instance of type "ReportResults" -> structure: parameter
-           "report_name" of String, parameter "report_ref" of String,
-           parameter "transformed_var" of type "var_ref" (KBase style object
-           reference X/Y/Z to a @id ws KBaseGwasData.Variations)
+           "report_name" of String, parameter "report_ref" of String
         """
         # ctx is the context object
         # return variables are: output
