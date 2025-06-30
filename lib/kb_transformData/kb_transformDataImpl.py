@@ -71,14 +71,17 @@ class kb_transformData:
         #print(w.get_workspace_description('gracefeng:narrative_1751308811409'))
 
         logging.info("Downloading phenotype data from shock.")
-        if os.path.exists(params['phenotype_data']):
-            variation_info = { 'path': params['phenotype_data'] }
-        else:
-            variations = VariationUtil(self.callback_url)
-            variation_info = variations.get_variation_as_vcf({
-                'variation_ref': params['phenotype_data'],
-                'filename': os.path.join(self.shared_folder, 'phenotype_data.vcf')
-            })
+        df = DataFileUtil(self.callback_url)
+        traits = df.get_objects(params["phenotype_data"])
+        print(traits)
+        #if os.path.exists(params['phenotype_data']):
+        #    variation_info = { 'path': params['phenotype_data'] }
+        #else:
+        #    variations = VariationUtil(self.callback_url)
+        #    variation_info = variations.get_variation_as_vcf({
+        #        'variation_ref': params['phenotype_data'],
+        #        'filename': os.path.join(self.shared_folder, 'phenotype_data.vcf')
+        #    })
         
         output = {}
         #report = KBaseReport(self.callback_url)

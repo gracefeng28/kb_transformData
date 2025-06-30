@@ -65,4 +65,7 @@ class kb_transformDataTest(unittest.TestCase):
         #
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods
-        ret = self.serviceImpl.run_kb_transformData(self.ctx, {'workspace_name': 'gracefeng:narrative_1751308811409', 'transform_type': 'sqrt', 'phenotype_data': '221461/3/1'})
+        ret = self.serviceImpl.run_kb_transformData(self.ctx, 
+                                                    {'workspace_name': 'gracefeng:narrative_1751321821886', 
+                                                     'transform_type': 'sqrt', 
+                                                     'phenotype_data': '75515/3/1'})
