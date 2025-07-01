@@ -6,21 +6,21 @@ module kb_transformData {
 
     /*
     KBase style object reference X/Y/Z to a
-        @id ws KBaseGwasData.Variations
+        @id ws KBaseExperiments.AttributeMapping
     */
-    typedef string var_ref;
+    typedef string trait_mapping;
 
 
 	typedef structure {
 	    string workspace_name;
 	    string transform_type;
-		var_ref phenotype_data;
+		trait_mapping phenotype_data;
 	} transformDataInput;
 
     typedef structure {
         string report_name;
         string report_ref;
-        var_ref transformed_var;
+        trait_mapping transformed_var;
     } ReportResults;
 
     /*

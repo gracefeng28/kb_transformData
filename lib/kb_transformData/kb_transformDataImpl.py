@@ -8,6 +8,7 @@ from installed_clients.VariationUtilClient import VariationUtil
 from installed_clients.WorkspaceClient import Workspace
 from installed_clients.DataFileUtilClient import DataFileUtil
 
+from kb_transformData.AttributeMapping import *
 #END_HEADER
 
 
@@ -72,8 +73,34 @@ class kb_transformData:
 
         logging.info("Downloading phenotype data from shock.")
         df = DataFileUtil(self.callback_url)
-        traits = df.get_objects(params["phenotype_data"])
-        print(traits)
+        
+        traits = df.get_objects({'object_refs': [params["phenotype_data"]]})['data'][0]
+        print(type(traits))
+        trait_obj = traits['data']
+        trait_meta = traits['info'][10]
+        #print("Keys: ", trait_obj.keys())
+        #for inst in trait_obj["instances"]:
+            #print(type(inst))
+        attr_list = []
+        for attr in trait_obj["attributes"]:
+            #print(attr["attribute"])
+            attr_list.append(attr["attribute"])
+        #print(traits.keys());
+        
+        output = AttributeMapping(traits)
+        #print("Here: ", output.get_keys())
+       
+        #print(traits['info'][10])
+
+        
+        
+        #print(output_meta)
+        
+        #selected_option = params["transform_type"]
+        #if (selected_option == "sqrt"):
+            #trait_sqrt = { k:v for (k,v) in trait_obj.items()}  
+
+        #print(traits)
         #if os.path.exists(params['phenotype_data']):
         #    variation_info = { 'path': params['phenotype_data'] }
         #else:
