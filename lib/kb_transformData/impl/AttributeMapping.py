@@ -7,7 +7,6 @@ class AttributeMapping:
     output = {}
     headings = []
     instances = {}
-    transformed_instances = {}
     def __init__(self, reference_object):
         for key,value in reference_object.items():
             self.output.update({key: value})
@@ -32,4 +31,18 @@ class AttributeMapping:
 
     def get_dict(self):
         return self.output['data']
-    
+    def peform_sqrt(self):
+        transformed_dict = {}
+        for k,v in self.instances.items():
+            inner_list = v
+            sqrt_list = []
+            for element in inner_list:
+                if np.isnan(element):
+                    sqrt_list.append(element)
+                else:
+                    sqrt_list.append(np.sqrt(element))
+        
+
+            transformed_dict.update({k: sqrt_list})
+        print(transformed_dict)
+        return transformed_dict

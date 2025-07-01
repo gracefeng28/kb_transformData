@@ -85,6 +85,7 @@ class kb_transformData:
         #create new attribute mapping with same data
         output_mapping = AttributeMapping(traits)
         output_mapping.show_object()
+        output_mapping.peform_sqrt()
         #perform appropriate transformation
 
         
