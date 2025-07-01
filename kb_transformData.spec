@@ -13,8 +13,10 @@ module kb_transformData {
 
 	typedef structure {
 	    string workspace_name;
+        string workspace_id;
 	    string transform_type;
 		trait_mapping phenotype_data;
+        string new_file_name;
 	} transformDataInput;
 
     typedef structure {

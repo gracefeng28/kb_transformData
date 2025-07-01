@@ -8,7 +8,7 @@ from installed_clients.VariationUtilClient import VariationUtil
 from installed_clients.WorkspaceClient import Workspace
 from installed_clients.DataFileUtilClient import DataFileUtil
 
-from kb_transformData.impl.AttributeMapping import *
+from kb_transformData.AttributeMapping import *
 #END_HEADER
 
 
@@ -29,7 +29,7 @@ class kb_transformData:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/gracefeng28/kb_transformData.git"
-    GIT_COMMIT_HASH = "a64f7ac87d9db6de67956951e5b8800580c43192"
+    GIT_COMMIT_HASH = "ac130f03f88c434f82964371be87df49b254466f"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -52,16 +52,13 @@ class kb_transformData:
         """
         This example function accepts any number of parameters and returns results in a KBaseReport
         :param params: instance of type "transformDataInput" -> structure:
-           parameter "workspace_name" of String, parameter "workspace_id" of
-           String, parameter "transform_type" of String, parameter
-           "phenotype_data" of type "trait_mapping" (KBase style object
-           reference X/Y/Z to a @id ws KBaseExperiments.AttributeMapping),
-           parameter "new_file_name" of String
+           parameter "workspace_name" of String, parameter "transform_type"
+           of String, parameter "phenotype_data" of type "var_ref" (KBase
+           style object reference X/Y/Z to a @id ws KBaseGwasData.Variations)
         :returns: instance of type "ReportResults" -> structure: parameter
            "report_name" of String, parameter "report_ref" of String,
-           parameter "transformed_var" of type "trait_mapping" (KBase style
-           object reference X/Y/Z to a @id ws
-           KBaseExperiments.AttributeMapping)
+           parameter "transformed_var" of type "var_ref" (KBase style object
+           reference X/Y/Z to a @id ws KBaseGwasData.Variations)
         """
         # ctx is the context object
         # return variables are: output

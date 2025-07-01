@@ -1,3 +1,4 @@
+import json
 class AttributeMapping:
     output = {}
     def __init__(self, reference_object):
@@ -9,7 +10,14 @@ class AttributeMapping:
         for k in self.output.keys():
             output.append(k)
         return output
-    def get_obj(self):
-        
-        return 5
+    def show_object(self):
+       layer1= self.output.keys()
+       print(layer1)
+       layer1_obj = self.output['data']
+       layer1_meta = self.output['info'][10]
+       print("NEW OBJECT: \n")
+       print(layer1_obj.keys())
+
+    def get_dict(self):
+        return self.output['data']
     

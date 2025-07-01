@@ -66,6 +66,8 @@ class kb_transformDataTest(unittest.TestCase):
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods
         ret = self.serviceImpl.run_kb_transformData(self.ctx, 
-                                                    {'workspace_name': 'gracefeng:narrative_1751321821886', 
+                                                    {'workspace_name': 'gracefeng:narrative_1751321821886',
+                                                     'workspace_id' : '75515',
                                                      'transform_type': 'sqrt', 
-                                                     'phenotype_data': '75515/3/1'})
+                                                     'phenotype_data': '75515/3/1',
+                                                     'new_file_name': 'ionomics_upload2'})

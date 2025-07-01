@@ -49,6 +49,16 @@
                     }
                 ]
             }
+        },{
+        "id": "new_file_name",
+        "optional": false,
+        "advanced": false,
+        "allow_multiple": false,
+        "default_values": [ ],
+        "field_type": "text",
+        "text_options": {
+            "validate_as": "str"
+        }
         }
     ],
     "behavior": {
@@ -69,6 +79,9 @@
                 },{
                     "input_parameter": "transform_type",
                     "target_property": "transform_type"
+                },{
+                    "input_parameter": "new_file_name",
+                    "target_property": "new_file_name"
                 }
             ],
             "output_mapping": [
