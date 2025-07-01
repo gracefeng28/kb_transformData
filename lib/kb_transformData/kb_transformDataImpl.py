@@ -4,7 +4,6 @@ import logging
 import os
 
 from installed_clients.KBaseReportClient import KBaseReport
-from installed_clients.VariationUtilClient import VariationUtil
 from installed_clients.WorkspaceClient import Workspace
 from installed_clients.DataFileUtilClient import DataFileUtil
 
@@ -81,55 +80,26 @@ class kb_transformData:
         df = DataFileUtil(self.callback_url)
         
         traits = df.get_objects({'object_refs': [params["phenotype_data"]]})['data'][0]
-        print(type(traits))
-        trait_obj = traits['data']
-        trait_meta = traits['info'][10]
-        #print("Keys: ", trait_obj.keys())
-        #for inst in trait_obj["instances"]:
-            #print(type(inst))
-        attr_list = []
-        for attr in trait_obj["attributes"]:
-            #print(attr["attribute"])
-            attr_list.append(attr["attribute"])
-        #print(traits.keys());
+        #trait_obj = traits['data']
+        #trait_meta = traits['info'][10]
+        #create new attribute mapping with same data
+        output_mapping = AttributeMapping(traits)
+        output_mapping.show_object()
+        #perform appropriate transformation
+
         
-        output = AttributeMapping(traits)
-        print(traits.keys())
-        print(trait_obj.keys())
-        output.show_object()
-        #
+        #saving object to workspace
         save_object_params = {
             'id': params["workspace_id"],
             'objects': [{
             'type': 'KBaseExperiments.AttributeMapping',
-            'data': output.get_dict(),
+            'data': output_mapping.get_dict(),
             'name': params["new_file_name"]
             }]
             }
-        dfu_oi = df.save_objects(save_object_params)[0]
-        object_reference = str(dfu_oi[6]) + '/' + str(dfu_oi[0]) + '/' + str(dfu_oi[4])
-        print(object_reference)
-        #print("Here: ", output.get_keys())
-       
-        #print(traits['info'][10])
-
+        #dfu_oi = df.save_objects(save_object_params)[0]
+        #object_reference = str(dfu_oi[6]) + '/' + str(dfu_oi[0]) + '/' + str(dfu_oi[4])
         
-        
-        #print(output_meta)
-        
-        #selected_option = params["transform_type"]
-        #if (selected_option == "sqrt"):
-            #trait_sqrt = { k:v for (k,v) in trait_obj.items()}  
-
-        #print(traits)
-        #if os.path.exists(params['phenotype_data']):
-        #    variation_info = { 'path': params['phenotype_data'] }
-        #else:
-        #    variations = VariationUtil(self.callback_url)
-        #    variation_info = variations.get_variation_as_vcf({
-        #        'variation_ref': params['phenotype_data'],
-        #        'filename': os.path.join(self.shared_folder, 'phenotype_data.vcf')
-        #    })
         
         output = {}
         #report = KBaseReport(self.callback_url)
