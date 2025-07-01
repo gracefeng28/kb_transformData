@@ -1,4 +1,8 @@
 import json
+import pandas as pd
+from scipy import stats
+import numpy as np
+
 class AttributeMapping:
     output = {}
     headings = []
@@ -10,6 +14,7 @@ class AttributeMapping:
         for element in self.output['data']['attributes']:
             self.headings.append(element['attribute'])
         self.instances = self.output['data']['instances']
+        
             
     def get_keys(self):
         output = []

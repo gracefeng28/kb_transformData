@@ -12,10 +12,15 @@ MAINTAINER KBase Developer
 # -----------------------------------------
 
 COPY ./ /kb/module
+
 RUN mkdir -p /kb/module/work
 RUN chmod -R a+rw /kb/module
 
 WORKDIR /kb/module
+RUN pip install --upgrade pip
+ADD requirements.txt .
+RUN python3 -m pip install -r requirements.txt
+
 
 RUN make all
 
