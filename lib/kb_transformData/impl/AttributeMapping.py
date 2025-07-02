@@ -73,3 +73,9 @@ class AttributeMapping:
     def get_dict(self):
         return self.output['data']
     
+    def sqrt_version2(self):
+        for 
+        column = []
+        for k,v in self.instances.items():
+            inner_vector = v
+            new_vector = []
