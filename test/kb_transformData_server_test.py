@@ -68,6 +68,6 @@ class kb_transformDataTest(unittest.TestCase):
         ret = self.serviceImpl.run_kb_transformData(self.ctx, 
                                                     {'workspace_name': 'gracefeng:narrative_1751321821886',
                                                      'workspace_id' : '75515',
-                                                     'transform_type': 'sqrt', 
+                                                     'transform_type': 'log', 
                                                      'phenotype_data': '75515/3/1',
-                                                     'new_file_name': 'ionomics_upload2'})
+                                                     'new_file_name': 'ionomics_upload_log'})

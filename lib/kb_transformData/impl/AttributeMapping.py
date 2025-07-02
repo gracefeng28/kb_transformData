@@ -7,14 +7,17 @@ class AttributeMapping:
     output = {}
     headings = []
     instances = {}
-    def __init__(self, reference_object):
+    def __init__(self, reference_object = None):
+    
         for key,value in reference_object.items():
             self.output.update({key: value})
+        
         for element in self.output['data']['attributes']:
             self.headings.append(element['attribute'])
         self.instances = self.output['data']['instances']
         
-            
+  
+
     def get_keys(self):
         output = []
         for k in self.output.keys():
@@ -28,21 +31,42 @@ class AttributeMapping:
        print("NEW OBJECT: \n")
        print(layer1_obj.keys())
        print(type(layer1_obj["instances"]))
+       print(type(layer1_obj["attributes"]))
+       for i in layer1_obj["attributes"]:
+           print(i)
+       print(layer1_obj["instances"]["BESC-109"])
+       print(layer1_obj['ontology_mapping_method'])
+
+    def perform_sqrt(self):
+        sqrt_instances = {}
+        for k,v in self.instances.items():
+            inner_vector = v
+            new_vector = []
+            for elem in inner_vector:
+                if(elem==""):
+                    new_vector.append(elem)
+                else:
+                    new_vector.append(str(round(np.sqrt(float(elem)),3)))
+            sqrt_instances.update({k:new_vector})
+        
+        self.output['data']['instances'] = sqrt_instances
+        #print(self.output['data']['instances'])
+    def perform_log(self):
+        log_instances = {}
+        for k,v in self.instances.items():
+            inner_vector = v
+            new_vector = []
+            for elem in inner_vector:
+                if(elem==""):
+                    new_vector.append(elem)
+                else:
+                    new_vector.append(str(round(np.log(float(elem)),3)))
+            log_instances.update({k:new_vector})
+        
+        self.output['data']['instances'] = log_instances
+        #print(self.output['data']['instances'])
+
 
     def get_dict(self):
         return self.output['data']
-    def peform_sqrt(self):
-        transformed_dict = {}
-        for k,v in self.instances.items():
-            inner_list = v
-            sqrt_list = []
-            for element in inner_list:
-                if np.isnan(element):
-                    sqrt_list.append(element)
-                else:
-                    sqrt_list.append(np.sqrt(element))
-        
-
-            transformed_dict.update({k: sqrt_list})
-        print(transformed_dict)
-        return transformed_dict
+    
