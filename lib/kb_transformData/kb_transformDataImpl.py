@@ -101,8 +101,8 @@ class kb_transformData:
             'name': params["new_file_name"]
             }]
             }
-        dfu_oi = df.save_objects(save_object_params)[0]
-        object_reference = str(dfu_oi[6]) + '/' + str(dfu_oi[0]) + '/' + str(dfu_oi[4])
+        #dfu_oi = df.save_objects(save_object_params)[0]
+        #object_reference = str(dfu_oi[6]) + '/' + str(dfu_oi[0]) + '/' + str(dfu_oi[4])
         
         
         output = {}

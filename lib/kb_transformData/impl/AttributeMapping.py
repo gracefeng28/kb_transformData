@@ -2,6 +2,7 @@ import json
 import pandas as pd
 from scipy import stats
 import numpy as np
+import math
 
 class AttributeMapping:
     output = {}
@@ -43,10 +44,10 @@ class AttributeMapping:
             inner_vector = v
             new_vector = []
             for elem in inner_vector:
-                if(elem==""):
+                if(elem=="" or math.isnan(float(elem))):
                     new_vector.append(elem)
                 else:
-                    new_vector.append(str(round(np.sqrt(float(elem)),3)))
+                    new_vector.append(str(round(math.sqrt(float(elem)),3)))
             sqrt_instances.update({k:new_vector})
         
         self.output['data']['instances'] = sqrt_instances
@@ -57,10 +58,12 @@ class AttributeMapping:
             inner_vector = v
             new_vector = []
             for elem in inner_vector:
-                if(elem==""):
+                if(elem=="" or math.isnan(float(elem))):
+                    new_vector.append(elem)
+                elif (float(elem) == 0):
                     new_vector.append(elem)
                 else:
-                    new_vector.append(str(round(np.log(float(elem)),3)))
+                    new_vector.append(str(round(math.log(float(elem)),3)))
             log_instances.update({k:new_vector})
         
         self.output['data']['instances'] = log_instances
