@@ -1,8 +1,9 @@
 import json
 import pandas as pd
-from scipy import stats
+from scipy import stats,special
 import numpy as np
 import math
+
 
 class AttributeMapping:
     output = {}
@@ -41,47 +42,92 @@ class AttributeMapping:
        print(layer1_obj["instances"]["BESC-109"])
        print(layer1_obj['ontology_mapping_method'])
 
-    def perform_sqrt(self):
-        sqrt_instances = {}
-        for k,v in self.instances.items():
-            inner_vector = v
-            new_vector = []
-            for elem in inner_vector:
-                if(elem=="" or math.isnan(float(elem))):
-                    new_vector.append(elem)
-                else:
-                    new_vector.append(str(round(math.sqrt(float(elem)),3)))
-            sqrt_instances.update({k:new_vector})
-        
-        self.output['data']['instances'] = sqrt_instances
-        #print(self.output['data']['instances'])
-    def perform_log(self):
-        log_instances = {}
-        for k,v in self.instances.items():
-            inner_vector = v
-            new_vector = []
-            for elem in inner_vector:
-                if(elem=="" or math.isnan(float(elem))):
-                    new_vector.append(elem)
-                elif (float(elem) == 0):
-                    new_vector.append(elem)
-                else:
-                    new_vector.append(str(round(math.log(float(elem)),3)))
-            log_instances.update({k:new_vector})
-        
-        self.output['data']['instances'] = log_instances
-        #print(self.output['data']['instances'])
-
+    
 
     def get_dict(self):
         return self.output['data']
-    
-    def dict_to_df(self):
+    def run_boxcox(self,trait,df):
+        data = list(df.loc[:,str(trait)])
+        float_array = []
+        for datum in data:
+            try:
+                float_array.append(float(datum))
+            except ValueError:
+                float_array.append(np.nan)
+        filtered_nan = [x for x in float_array if not np.isnan(x)]
+        #Box-Cox requires all positive values
+        _, lmbda = stats.boxcox(filtered_nan)
+        #perform box cox transformation
+        fitted_data = special.boxcox(float_array,lmbda)
+        fitted_data = fitted_data.round(3)
+        print(trait)
+        #print(f"Lambda value used for Transformation: {lmbda}")
+        str_fitted = []
+        for i in fitted_data:
+            if (np.isnan(i)):
+                str_fitted.append("")
+            else:
+                str_fitted.append(str(i))
+        return str_fitted
+    def run_sqrt(self,trait,df):
+        data = list(df.loc[:,str(trait)])
+        float_array = []
+        for datum in data:
+            try:
+                float_array.append(float(datum))
+            except ValueError:
+                float_array.append(np.nan)
+        
+        #Box-Cox requires all positive values
+        sqrt_array = np.sqrt(float_array)
+        sqrt_array = sqrt_array.round(3)
+        #perform box cox transformation
+        print(trait)
+        #print(f"Lambda value used for Transformation: {lmbda}")
+        str_fitted = []
+        for i in sqrt_array:
+            if (np.isnan(i)):
+                str_fitted.append("")
+            else:
+                str_fitted.append(str(i))
+        return str_fitted
+    def run_log(self,trait,df):
+        data = list(df.loc[:,str(trait)])
+        float_array = []
+        for datum in data:
+            try:
+                float_array.append(float(datum))
+            except ValueError:
+                float_array.append(np.nan)
+        
+        #Box-Cox requires all positive values
+        log_array = np.log(float_array)
+        log_array = log_array.round(3)
+        #perform box cox transformation
+        print(trait)
+        #print(f"Lambda value used for Transformation: {lmbda}")
+        str_fitted = []
+        for i in log_array:
+            if (np.isnan(i)):
+                str_fitted.append("")
+            else:
+                str_fitted.append(str(i))
+        return str_fitted
+    def run_test(self, test_type):
+        output_dict = {}
         df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
-        #df.columns = self.headings
-        print(df.index)
-        self.return_to_dict(df)
-
+        df.columns = self.headings
+        cols = list(df.columns)
+        for col in cols:
+            if (test_type == "box-cox"):
+                new_col = self.run_boxcox(col,df)
+            elif (test_type == "sqrt"):
+                new_col = self.run_sqrt(col,df)
+            else:
+                new_col = self.run_log(col,df)
+            df[col] = new_col
+        self.output['data']['instances'] = self.return_to_dict(df)
+        
     def return_to_dict(self,df):
         return df.T.to_dict('list')
     

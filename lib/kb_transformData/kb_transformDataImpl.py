@@ -87,10 +87,8 @@ class kb_transformData:
         
         #output_mapping.run_sqrt()
         #output_mapping.show_object()
-        if (params['transform_type']=="sqrt"):
-            output_mapping.function()
-        #if(params['transform_type']=="log"):
-        #    output_mapping.perform_log()
+        output_mapping.run_test(params['transform_type'])
+        
         #perform appropriate transformation
 
         
@@ -103,8 +101,8 @@ class kb_transformData:
             'name': params["new_file_name"]
             }]
             }
-        #dfu_oi = df.save_objects(save_object_params)[0]
-        #object_reference = str(dfu_oi[6]) + '/' + str(dfu_oi[0]) + '/' + str(dfu_oi[4])
+        dfu_oi = df.save_objects(save_object_params)[0]
+        object_reference = str(dfu_oi[6]) + '/' + str(dfu_oi[0]) + '/' + str(dfu_oi[4])
         
         
         output = {}
