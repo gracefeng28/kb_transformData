@@ -84,11 +84,13 @@ class kb_transformData:
         #trait_meta = traits['info'][10]
         #create new attribute mapping with same data
         output_mapping = AttributeMapping(traits)
+        
+        #output_mapping.run_sqrt()
         #output_mapping.show_object()
         if (params['transform_type']=="sqrt"):
-            output_mapping.perform_sqrt()
-        if(params['transform_type']=="log"):
-            output_mapping.perform_log()
+            output_mapping.function()
+        #if(params['transform_type']=="log"):
+        #    output_mapping.perform_log()
         #perform appropriate transformation
 
         

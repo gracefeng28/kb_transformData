@@ -8,6 +8,7 @@ class AttributeMapping:
     output = {}
     headings = []
     instances = {}
+    columns = {}
     def __init__(self, reference_object = None):
     
         for key,value in reference_object.items():
@@ -17,13 +18,15 @@ class AttributeMapping:
             self.headings.append(element['attribute'])
         self.instances = self.output['data']['instances']
         
-  
+    def print_heading(self):
+        print(self.headings)
 
     def get_keys(self):
         output = []
         for k in self.output.keys():
             output.append(k)
         return output
+    
     def show_object(self):
        layer1= self.output.keys()
        print(layer1)
@@ -73,9 +76,40 @@ class AttributeMapping:
     def get_dict(self):
         return self.output['data']
     
-    def sqrt_version2(self):
-        for 
-        column = []
-        for k,v in self.instances.items():
-            inner_vector = v
-            new_vector = []
+    def dict_to_df(self):
+        df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
+        #df.columns = self.headings
+        print(df.index)
+        self.return_to_dict(df)
+
+    def return_to_dict(self,df):
+        return df.T.to_dict('list')
+    
+    def make_columns(self):
+        column_dict = {}
+        for i in range(0,len(self.headings)):
+            column = []
+            for k,v in self.output['data']['instances'].items():
+                column.append(v[i])
+            column_dict.update({self.headings[i]:column})
+
+        return column_dict
+    
+    def process_col(self, col, type_test):
+        itemset = set(col)
+        float_itemset = set(float(item) for item in itemset if item != "")
+        if (len(itemset)<=2):
+            return (False,"binary trait")
+        if (type_test == "box_cox"):
+            if (min(float_itemset)<0):
+                return (False,"negative numbers (box-cox)")
+        if (type_test == "log"):
+            if (min(float_itemset)<=0):
+                return (False,"All values must be greater than 0 (logarithmic)")
+        if (type_test == "sqrt"):
+            if (min(float_itemset)<0):
+                return (False,"All values must be at least 0 (sqrt)")
+        return (True,"passes tests")
+    
+    
+    
