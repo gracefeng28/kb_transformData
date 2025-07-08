@@ -3,6 +3,7 @@ import pandas as pd
 from scipy import stats,special
 import numpy as np
 import math
+from sklearn.preprocessing import PowerTransformer
 
 
 class AttributeMapping:
@@ -113,19 +114,54 @@ class AttributeMapping:
             else:
                 str_fitted.append(str(i))
         return str_fitted
+    def run_yeo_johnson(self, input_list):
+        pt = PowerTransformer(method='yeo-johnson')
+        
+
+        print(pt.fit(input_list))
+        #print(len(pt.lambdas_))
+        #pt.transform(input_list)
+        return pt.transform(input_list)
+
     def run_test(self, test_type):
         output_dict = {}
         df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
         df.columns = self.headings
+        
         cols = list(df.columns)
-        for col in cols:
-            if (test_type == "box-cox"):
-                new_col = self.run_boxcox(col,df)
-            elif (test_type == "sqrt"):
-                new_col = self.run_sqrt(col,df)
-            else:
-                new_col = self.run_log(col,df)
-            df[col] = new_col
+        input_list = []
+        if (test_type == "yeo-johnson"):
+            for i in range(0,len(df)):
+                current_row= []
+                data = list(df.iloc[i])
+                for datum in data:
+                    try:
+                        current_row.append(float(datum))
+                    except ValueError:
+                        current_row.append(np.nan)
+                input_list.append(current_row)
+            new_list= self.run_yeo_johnson(input_list)
+            for i in range(0,len(df)):
+                str_fitted = []
+                for j in new_list[i]:
+                    if (np.isnan(j)):
+                        str_fitted.append("")
+                    else:
+                        
+                        str_fitted.append(str(round(j,3)))
+                df.iloc[i] = str_fitted
+            print(df)
+        else:
+            for col in cols:
+                if (test_type == "box-cox"):
+                    new_col = self.run_boxcox(col,df)
+                elif (test_type == "sqrt"):
+                    new_col = self.run_sqrt(col,df)
+                elif (test_type == "yeo-johnson"):
+                    new_col = self.run_yeo_johnson(col,df)
+                else:
+                    new_col = self.run_log(col,df)
+                df[col] = new_col
         self.output['data']['instances'] = self.return_to_dict(df)
         
     def return_to_dict(self,df):
