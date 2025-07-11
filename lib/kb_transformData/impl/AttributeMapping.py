@@ -150,7 +150,7 @@ class AttributeMapping:
                         
                         str_fitted.append(str(round(j,3)))
                 df.iloc[i] = str_fitted
-            print(df)
+            #print(df)
         else:
             for col in cols:
                 if (test_type == "box-cox"):

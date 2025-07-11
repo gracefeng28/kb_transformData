@@ -6,7 +6,7 @@ import os
 from installed_clients.KBaseReportClient import KBaseReport
 from installed_clients.WorkspaceClient import Workspace
 from installed_clients.DataFileUtilClient import DataFileUtil
-
+from .Utils.createHtmlReport import HTMLReportCreator
 from kb_transformData.impl.AttributeMapping import *
 #END_HEADER
 
@@ -101,11 +101,18 @@ class kb_transformData:
             'name': params["new_file_name"]
             }]
             }
-        dfu_oi = df.save_objects(save_object_params)[0]
-        object_reference = str(dfu_oi[6]) + '/' + str(dfu_oi[0]) + '/' + str(dfu_oi[4])
+        #dfu_oi = df.save_objects(save_object_params)[0]
+        #object_reference = str(dfu_oi[6]) + '/' + str(dfu_oi[0]) + '/' + str(dfu_oi[4])
+        object_reference ="75515/13/6"
         
-        
+        objects_created = [{'ref':object_reference,'description': 'data transformed by ' + params['transform_type'] + ' '}]
+        report_creator = HTMLReportCreator(self.callback_url)
+       
+        reportDirectory = "/kb/module/lib/"
+        #print("Here", str(os.listdir(reportDirectory)))
         output = {}
+        output = report_creator.create_html_report(reportDirectory, params['workspace_name'], objects_created)
+        logging.info('HTML output report: ' + str(output))
         #report = KBaseReport(self.callback_url)
         #report_info = report.create({'report': {'objects_created':[],
                                                 #'text_message': params['parameter_1']},
