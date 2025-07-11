@@ -2,7 +2,7 @@
 #BEGIN_HEADER
 import logging
 import os
-
+import uuid
 from installed_clients.KBaseReportClient import KBaseReport
 from installed_clients.WorkspaceClient import Workspace
 from installed_clients.DataFileUtilClient import DataFileUtil
@@ -88,10 +88,6 @@ class kb_transformData:
         #output_mapping.run_sqrt()
         #output_mapping.show_object()
         output_mapping.run_test(params['transform_type'])
-        
-        #perform appropriate transformation
-
-        
         #saving object to workspace
         save_object_params = {
             'id': params["workspace_id"],
@@ -106,13 +102,18 @@ class kb_transformData:
         object_reference ="75515/13/6"
         
         objects_created = [{'ref':object_reference,'description': 'data transformed by ' + params['transform_type'] + ' '}]
-        report_creator = HTMLReportCreator(self.callback_url)
+        
+        reportDirectory = "/kb/module/lib/kb_transformData/results/"
+        
+
+        
+        #report_creator = HTMLReportCreator(self.callback_url)
        
-        reportDirectory = "/kb/module/lib/"
+        #reportDirectory = "/kb/module/lib/kb_transformData/reports/"
         #print("Here", str(os.listdir(reportDirectory)))
         output = {}
-        output = report_creator.create_html_report(reportDirectory, params['workspace_name'], objects_created)
-        logging.info('HTML output report: ' + str(output))
+        #output = report_creator.create_html_report(reportDirectory, params['workspace_name'], objects_created)
+        #logging.info('HTML output report: ' + str(output))
         #report = KBaseReport(self.callback_url)
         #report_info = report.create({'report': {'objects_created':[],
                                                 #'text_message': params['parameter_1']},

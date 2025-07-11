@@ -23,7 +23,7 @@ class HTMLReportCreator:
         """
         report_name = 'kb_transformData_report_' + str(uuid.uuid4())
 
-
+        
         # Upload the directory to Shock
         report_shock_id = self.dfu.file_to_shock({'file_path': output_dir, 'pack': 'zip'})['shock_id']
 
@@ -33,7 +33,7 @@ class HTMLReportCreator:
             'shock_id': report_shock_id,
             'name': 'index.html',
             'label': 'index.html',
-            'description': 'HTML report for dan_hoppLighter'
+            'description': 'HTML report for transformData'
         }
 
 

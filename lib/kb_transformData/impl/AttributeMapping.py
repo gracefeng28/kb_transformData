@@ -3,6 +3,7 @@ import pandas as pd
 from scipy import stats,special
 import numpy as np
 import math
+import os
 from sklearn.preprocessing import PowerTransformer
 
 
@@ -11,6 +12,7 @@ class AttributeMapping:
     headings = []
     instances = {}
     columns = {}
+    transform_type = None
     def __init__(self, reference_object = None):
     
         for key,value in reference_object.items():
@@ -69,6 +71,7 @@ class AttributeMapping:
                 str_fitted.append("")
             else:
                 str_fitted.append(str(i))
+        self.transform_type = "box-cox"
         return str_fitted
     def run_sqrt(self,trait,df):
         data = list(df.loc[:,str(trait)])
@@ -91,6 +94,7 @@ class AttributeMapping:
                 str_fitted.append("")
             else:
                 str_fitted.append(str(i))
+        self.transform_type = "sqrt"
         return str_fitted
     def run_log(self,trait,df):
         data = list(df.loc[:,str(trait)])
@@ -113,18 +117,16 @@ class AttributeMapping:
                 str_fitted.append("")
             else:
                 str_fitted.append(str(i))
+        self.transform_type = "log"
         return str_fitted
     def run_yeo_johnson(self, input_list):
         pt = PowerTransformer(method='yeo-johnson')
-        
-
         print(pt.fit(input_list))
         #print(len(pt.lambdas_))
         #pt.transform(input_list)
         return pt.transform(input_list)
 
     def run_test(self, test_type):
-        output_dict = {}
         df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
         df.columns = self.headings
         
@@ -151,14 +153,13 @@ class AttributeMapping:
                         str_fitted.append(str(round(j,3)))
                 df.iloc[i] = str_fitted
             #print(df)
+            self.transform_type = "yeo-johnson"
         else:
             for col in cols:
                 if (test_type == "box-cox"):
                     new_col = self.run_boxcox(col,df)
                 elif (test_type == "sqrt"):
                     new_col = self.run_sqrt(col,df)
-                elif (test_type == "yeo-johnson"):
-                    new_col = self.run_yeo_johnson(col,df)
                 else:
                     new_col = self.run_log(col,df)
                 df[col] = new_col
@@ -193,5 +194,15 @@ class AttributeMapping:
                 return (False,"All values must be at least 0 (sqrt)")
         return (True,"passes tests")
     
+    def save_to_files(self,shared_folder):
+        transform_type = ""
+        if self.transform_type == None:
+            transform_type = "original"
+        df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
+        df.columns = self.headings
+        cols = list(df.columns)
+        for attribute in cols:
+            filtered_path = os.path.join(shared_folder, attribute,"_", transform_type,'.png')
+            
     
     
