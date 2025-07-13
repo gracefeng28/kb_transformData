@@ -3,6 +3,7 @@
 import logging
 import os
 import uuid
+import shutil
 from installed_clients.KBaseReportClient import KBaseReport
 from installed_clients.WorkspaceClient import Workspace
 from installed_clients.DataFileUtilClient import DataFileUtil
@@ -84,9 +85,6 @@ class kb_transformData:
         #trait_meta = traits['info'][10]
         #create new attribute mapping with same data
         output_mapping = AttributeMapping(traits)
-        
-        #output_mapping.run_sqrt()
-        #output_mapping.show_object()
         output_mapping.run_test(params['transform_type'])
         #saving object to workspace
         save_object_params = {
@@ -100,17 +98,33 @@ class kb_transformData:
         #dfu_oi = df.save_objects(save_object_params)[0]
         #object_reference = str(dfu_oi[6]) + '/' + str(dfu_oi[0]) + '/' + str(dfu_oi[4])
         object_reference ="75515/13/6"
-        
         objects_created = [{'ref':object_reference,'description': 'data transformed by ' + params['transform_type'] + ' '}]
+        #reportDirectory = "/kb/module/lib/kb_transformData/results/"
         
-        reportDirectory = "/kb/module/lib/kb_transformData/results/"
-        
+        html_report = list()
 
+        output_directory = os.path.join(self.scratch, str(uuid.uuid4()))
+        self._mkdir_p(output_directory)
+        result_file_path = os.path.join(output_directory, 'report.html')
         
-        #report_creator = HTMLReportCreator(self.callback_url)
-       
-        #reportDirectory = "/kb/module/lib/kb_transformData/reports/"
-        #print("Here", str(os.listdir(reportDirectory)))
+        report_shock_id = self.dfu.file_to_shock({'file_path': output_directory,
+                                                  'pack': 'zip'})['shock_id']
+
+        html_report.append({'shock_id': report_shock_id,
+                            'name': os.path.basename(result_file_path),
+                            'label': os.path.basename(result_file_path),
+                            'description': 'HTML summary report for Transform data App'})
+        attribute_directories = os.path.join(self.scratch, "results","attributes")
+        shutil.copy2(os.path.join(self.scratch, "results", "original_image.png"),
+                         os.path.join(output_directory, "original_image.png"))
+        attribute_html = ''
+        for attribute_dir in attribute_directories:
+            plots_name = attribute_dir + '.png'
+            shutil.copy2(os.path.join(attribute_directories, attribute_dir, plots_name),
+                         os.path.join(output_directory, plots_name))
+            attribute_name = attribute_dir.replace("_"," ")
+            attribute_html += "<button id = \"option\" class = \"attributes\" >"+ attribute_name + "</button>"
+
         output = {}
         #output = report_creator.create_html_report(reportDirectory, params['workspace_name'], objects_created)
         #logging.info('HTML output report: ' + str(output))
