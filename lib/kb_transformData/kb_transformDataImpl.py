@@ -95,27 +95,21 @@ class kb_transformData:
             'name': params["new_file_name"]
             }]
             }
-        #dfu_oi = df.save_objects(save_object_params)[0]
-        #object_reference = str(dfu_oi[6]) + '/' + str(dfu_oi[0]) + '/' + str(dfu_oi[4])
-        object_reference ="75515/13/6"
+        dfu_oi = df.save_objects(save_object_params)[0]
+        object_reference = str(dfu_oi[6]) + '/' + str(dfu_oi[0]) + '/' + str(dfu_oi[4])
+        #object_reference ="75515/13/6"
         objects_created = [{'ref':object_reference,'description': 'data transformed by ' + params['transform_type'] + ' '}]
-        #reportDirectory = "/kb/module/lib/kb_transformData/results/"
+        reportDirectory = "/kb/module/lib/kb_transformData/reports/"
         
         html_report = list()
 
-        output_directory = os.path.join(self.scratch, str(uuid.uuid4()))
-        self._mkdir_p(output_directory)
+        output_directory = os.path.join(self.shared_folder, str(uuid.uuid4()))
+        os.mkdir(output_directory)
         result_file_path = os.path.join(output_directory, 'report.html')
         
-        report_shock_id = self.dfu.file_to_shock({'file_path': output_directory,
-                                                  'pack': 'zip'})['shock_id']
-
-        html_report.append({'shock_id': report_shock_id,
-                            'name': os.path.basename(result_file_path),
-                            'label': os.path.basename(result_file_path),
-                            'description': 'HTML summary report for Transform data App'})
-        attribute_directories = os.path.join(self.scratch, "results","attributes")
-        shutil.copy2(os.path.join(self.scratch, "results", "original_image.png"),
+       
+        attribute_directories = os.path.join(self.shared_folder, "results","attributes")
+        shutil.copy2(os.path.join(self.shared_folder, "results", "original_image.png"),
                          os.path.join(output_directory, "original_image.png"))
         attribute_html = ''
         for attribute_dir in attribute_directories:
@@ -124,6 +118,46 @@ class kb_transformData:
                          os.path.join(output_directory, plots_name))
             attribute_name = attribute_dir.replace("_"," ")
             attribute_html += "<button id = \"option\" class = \"attributes\" >"+ attribute_name + "</button>"
+        type_transform = ""
+        if (params["transform_type"]=="box-cox"):
+            type_transform = "Box Cox"
+        elif (params["transform_type"]=="sqrt"):
+            type_transform = "Square Root"
+        elif (params["transform_type"]=="log"):
+            type_transform = "Natural Logarithm"
+        else:
+            type_transform = "Yeo-Johnson"
+
+        with open(result_file_path, 'w') as result_file:
+            with open(os.path.join(reportDirectory, 'template.html'),
+                      'r') as report_template_file:
+                report_template = report_template_file.read()
+                report_template = report_template.replace('<p>ATTRIBUTES</p>',
+                                                          attribute_html)
+                
+                report_template = report_template.replace('TRANSFORMATION_TYPE',
+                                                          type_transform)
+                result_file.write(report_template)
+        
+        report_shock_id = self.dfu.file_to_shock({'file_path': output_directory,
+                                                  'pack': 'zip'})['shock_id']
+        html_report.append({'shock_id': report_shock_id,
+                            'name': os.path.basename(result_file_path),
+                            'label': os.path.basename(result_file_path),
+                            'description': 'HTML summary report for Transform data App'})
+        report_name = 'kb_transformData_report_' + str(uuid.uuid4())
+        report_info = self.report.create_extended_report({
+            'direct_html_link_index': 0,
+            'html_links': [html_report],
+            'report_object_name': report_name,
+            'objects_created': objects_created,
+            'workspace_name': params["workspace_name"]
+        })
+        output =  {
+            'report_name': report_info['name'],
+            'report_ref': report_info['ref']
+        }
+
 
         output = {}
         #output = report_creator.create_html_report(reportDirectory, params['workspace_name'], objects_created)
