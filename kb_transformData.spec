@@ -22,7 +22,6 @@ module kb_transformData {
     typedef structure {
         string report_name;
         string report_ref;
-        trait_mapping transformed_var;
     } ReportResults;
 
     /*

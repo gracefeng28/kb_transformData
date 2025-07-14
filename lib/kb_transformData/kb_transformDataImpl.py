@@ -89,6 +89,7 @@ class kb_transformData:
         output_mapping = AttributeMapping(folder, reference_object=traits)
         output_mapping.run_test(params['transform_type'])
         output_mapping.save_to_files(shared_folder=folder)
+        #print(output_mapping.return_valid())
         #saving object to workspace
         save_object_params = {
             'id': params["workspace_id"],
@@ -137,7 +138,14 @@ class kb_transformData:
             type_transform = "Natural Logarithm"
         else:
             type_transform = "Yeo-Johnson"
-
+        valid_traits_html= ""
+        not_valid_traits_html = ""
+        vt = output_mapping.valid_attributes
+        nvt = output_mapping.not_valid_attributes
+        for v in vt:
+            valid_traits_html += "<li>" +v+ "</li>"
+        for nv in nvt:
+            not_valid_traits_html += "<li>" +nv+ "</li>"
         with open(result_file_path, 'w') as result_file:
             with open(os.path.join(reportDirectory, 'template.html'),
                       'r') as report_template_file:
@@ -147,6 +155,10 @@ class kb_transformData:
                 
                 report_template = report_template.replace('TRANSFORMATION_TYPE',
                                                           type_transform)
+                report_template = report_template.replace('<li>Valid Traits</li>',
+                                                          valid_traits_html)
+                report_template = report_template.replace('<li>Binary Traits</li>',
+                                                          not_valid_traits_html)
                 result_file.write(report_template)
         
         report_shock_id = self.dfu.file_to_shock({'file_path': output_directory,
@@ -157,9 +169,12 @@ class kb_transformData:
                             'description': 'HTML summary report for Transform data App'})
         report_name = 'kb_transformData_report_' + str(uuid.uuid4())
         kbase_report_client = KBaseReport(self.callback_url)
+        message_in_app = f"Successfully performed {type_transform} transformation\n"
         report_info = kbase_report_client.create_extended_report({
+            'message': message_in_app,
             'direct_html_link_index': 0,
             'html_links': html_report,
+            'html_window_height': 475,
             'report_object_name': report_name,
             'objects_created': objects_created,
             'workspace_name': params["workspace_name"]
@@ -169,18 +184,6 @@ class kb_transformData:
             'report_ref': report_info['ref']
         }
 
-
-        output = {}
-        #output = report_creator.create_html_report(reportDirectory, params['workspace_name'], objects_created)
-        #logging.info('HTML output report: ' + str(output))
-        #report = KBaseReport(self.callback_url)
-        #report_info = report.create({'report': {'objects_created':[],
-                                                #'text_message': params['parameter_1']},
-                                                #'workspace_name': params['workspace_name']})
-        #output = {
-        #    'report_name': report_info['name'],
-        #   'report_ref': report_info['ref'],
-        #}
         #END run_kb_transformData
 
         # At some point might do deeper type checking...

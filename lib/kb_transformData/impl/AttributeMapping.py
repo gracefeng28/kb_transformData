@@ -16,6 +16,8 @@ class AttributeMapping:
         self.headings = []
         self.instances = {}
         self.columns = {}
+        self.valid_attributes = []
+        self.not_valid_attributes = []
         self.transform_type = None
         for key,value in reference_object.items():
             self.output.update({key: value})
@@ -23,6 +25,24 @@ class AttributeMapping:
         for element in self.output['data']['attributes']:
             self.headings.append(element['attribute'])
         self.instances = self.output['data']['instances']
+
+        self.df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
+        self.df.columns = self.headings
+        cols = list(self.df.columns)
+        for col in cols:
+            data = list(self.df.loc[:,str(col)])
+            float_set = set()
+            for datum in data:
+                try:
+                    float_set.add(float(datum))
+                    if len(float_set)>2:
+                        break
+                except ValueError:
+                    float_set.add(np.nan)
+            if len(float_set)>2:
+                self.valid_attributes.append(col)
+            else:
+                self.not_valid_attributes.append(col)
         self.save_to_files(shared_folder)
         
     def print_heading(self):
@@ -52,8 +72,8 @@ class AttributeMapping:
 
     def get_dict(self):
         return self.output['data']
-    def run_boxcox(self,trait,df):
-        data = list(df.loc[:,str(trait)])
+    def run_boxcox(self,trait):
+        data = list(self.df.loc[:,str(trait)])
         float_array = []
         for datum in data:
             try:
@@ -76,8 +96,8 @@ class AttributeMapping:
                 str_fitted.append(str(i))
         self.transform_type = "box-cox"
         return str_fitted
-    def run_sqrt(self,trait,df):
-        data = list(df.loc[:,str(trait)])
+    def run_sqrt(self,trait):
+        data = list(self.df.loc[:,str(trait)])
         float_array = []
         for datum in data:
             try:
@@ -99,8 +119,8 @@ class AttributeMapping:
                 str_fitted.append(str(i))
         self.transform_type = "sqrt"
         return str_fitted
-    def run_log(self,trait,df):
-        data = list(df.loc[:,str(trait)])
+    def run_log(self,trait):
+        data = list(self.df.loc[:,str(trait)])
         float_array = []
         for datum in data:
             try:
@@ -130,15 +150,16 @@ class AttributeMapping:
         return pt.transform(input_list)
 
     def run_test(self, test_type):
-        df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
-        df.columns = self.headings
+        #df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
+        #df.columns = self.headings
         
-        cols = list(df.columns)
+        cols = list(self.df.columns)
         input_list = []
+        
         if (test_type == "yeo-johnson"):
-            for i in range(0,len(df)):
+            for i in range(0,len(self.df)):
                 current_row= []
-                data = list(df.iloc[i])
+                data = list(self.df.iloc[i])
                 for datum in data:
                     try:
                         current_row.append(float(datum))
@@ -146,7 +167,7 @@ class AttributeMapping:
                         current_row.append(np.nan)
                 input_list.append(current_row)
             new_list= self.run_yeo_johnson(input_list)
-            for i in range(0,len(df)):
+            for i in range(0,len(self.df)):
                 str_fitted = []
                 for j in new_list[i]:
                     if (np.isnan(j)):
@@ -154,22 +175,26 @@ class AttributeMapping:
                     else:
                         
                         str_fitted.append(str(round(j,3)))
-                df.iloc[i] = str_fitted
+                self.df.iloc[i] = str_fitted
             #print(df)
             self.transform_type = "yeo-johnson"
         else:
             for col in cols:
-                if (test_type == "box-cox"):
-                    new_col = self.run_boxcox(col,df)
-                elif (test_type == "sqrt"):
-                    new_col = self.run_sqrt(col,df)
-                else:
-                    new_col = self.run_log(col,df)
-                df[col] = new_col
-        self.output['data']['instances'] = self.return_to_dict(df)
-        
-    def return_to_dict(self,df):
-        return df.T.to_dict('list')
+                if col in self.valid_attributes:
+                    if (test_type == "box-cox"):
+                        new_col = self.run_boxcox(col)
+                    elif (test_type == "sqrt"):
+                        new_col = self.run_sqrt(col)
+                    else:
+                        new_col = self.run_log(col)
+                    self.df[col] = new_col
+        self.output['data']['instances'] = self.return_to_dict()
+    def return_not_valid(self):
+        return self.not_valid_attributes
+    def return_valid(self):
+        return self.valid_attributes
+    def return_to_dict(self):
+        return self.df.T.to_dict('list')
     
     def make_columns(self):
         column_dict = {}
@@ -203,10 +228,10 @@ class AttributeMapping:
             transform_type = "_original"
         else:
             transform_type = "_transformed"
-        df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
-        df.columns = self.headings
-        cols = list(df.columns)        
-        for attribute in cols:
+        #df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
+        #df.columns = self.headings    
+        df = self.df  
+        for attribute in self.valid_attributes:
             data = (df.loc[:,str(attribute)])
             float_array = []
             for datum in data:
