@@ -3,7 +3,7 @@ import pandas as pd
 from scipy import stats,special
 import numpy as np
 import math
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import os
 import seaborn as sns
 from sklearn.preprocessing import PowerTransformer
@@ -208,14 +208,21 @@ class AttributeMapping:
         cols = list(df.columns)        
         for attribute in cols:
             data = (df.loc[:,str(attribute)])
-            filter_nan = [x for x in data if not np.isnan(x)]
+            float_array = []
+            for datum in data:
+                try:
+                    float_array.append(float(datum))
+                except ValueError:
+                    float_array.append(np.nan)
+            filter_nan = [x for x in float_array if not np.isnan(x)]
             a = attribute.replace(" ", "_")
-            filtered_path = os.path.join(shared_folder,"results","attributes", a+transform_type +".png")
-            if os.path.isdir(filtered_path) == False:
-                os.mkdir(filtered_path)
+            filtered_path = os.path.join(shared_folder, a)
+            if os.path.exists(filtered_path) == False: 
+                os.mkdir(filtered_path)    
+            new_path = os.path.join(filtered_path, a+transform_type +".png")
             attribute_df = pd.DataFrame(filter_nan)
             sns.displot(attribute_df)
-            plt.savefig(filtered_path)
+            plt.savefig(new_path)
             plt.close()
 
 

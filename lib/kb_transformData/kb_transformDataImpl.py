@@ -84,9 +84,11 @@ class kb_transformData:
         #trait_obj = traits['data']
         #trait_meta = traits['info'][10]
         #create new attribute mapping with same data
-        output_mapping = AttributeMapping(self.shared_folder, reference_object=traits)
+        folder = os.path.join(self.shared_folder,"attributes")
+        os.mkdir(folder)
+        output_mapping = AttributeMapping(folder, reference_object=traits)
         output_mapping.run_test(params['transform_type'])
-        output_mapping.save_to_files(shared_folder=self.shared_folder)
+        output_mapping.save_to_files(shared_folder=folder)
         #saving object to workspace
         save_object_params = {
             'id': params["workspace_id"],
@@ -109,18 +111,20 @@ class kb_transformData:
         os.mkdir(output_directory)
         result_file_path = os.path.join(output_directory, 'report.html')
         
-       
-        attribute_directories = os.path.join(self.shared_folder, "results","attributes")
-        
+        attribute_directories = os.listdir(os.path.join(self.shared_folder,"attributes"))
+        #attribute_directories = self.shared_folder
+        #print(attribute_directories)
         #shutil.copy2(os.path.join(self.shared_folder, "results", "original_image.png"),
                          #os.path.join(output_directory, "original_image.png"))
         attribute_html = ''
         for attribute_dir in attribute_directories:
             plots_name1 = attribute_dir + '_transformed.png'
             plots_name2 = attribute_dir + '_original.png'
-            shutil.copy2(os.path.join(attribute_directories, attribute_dir, plots_name1),
+            os.mkdir(os.path.join(output_directory, plots_name1))
+            os.mkdir(os.path.join(output_directory, plots_name2))
+            shutil.copy2(os.path.join(self.shared_folder, "attributes", attribute_dir, plots_name1),
                          os.path.join(output_directory, plots_name1))
-            shutil.copy2(os.path.join(attribute_directories, attribute_dir, plots_name2),
+            shutil.copy2(os.path.join(self.shared_folder, "attributes", attribute_dir, plots_name2),
                          os.path.join(output_directory, plots_name2))
             attribute_name = attribute_dir.replace("_"," ")
             attribute_html += "<button id = \"option\" class = \"attributes\" >"+ attribute_name + "</button>"
@@ -152,9 +156,10 @@ class kb_transformData:
                             'label': os.path.basename(result_file_path),
                             'description': 'HTML summary report for Transform data App'})
         report_name = 'kb_transformData_report_' + str(uuid.uuid4())
-        report_info = self.report.create_extended_report({
+        kbase_report_client = KBaseReport(self.callback_url)
+        report_info = kbase_report_client.create_extended_report({
             'direct_html_link_index': 0,
-            'html_links': [html_report],
+            'html_links': html_report,
             'report_object_name': report_name,
             'objects_created': objects_created,
             'workspace_name': params["workspace_name"]
