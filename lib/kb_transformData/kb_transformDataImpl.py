@@ -84,8 +84,9 @@ class kb_transformData:
         #trait_obj = traits['data']
         #trait_meta = traits['info'][10]
         #create new attribute mapping with same data
-        output_mapping = AttributeMapping(traits)
+        output_mapping = AttributeMapping(self.shared_folder, reference_object=traits)
         output_mapping.run_test(params['transform_type'])
+        output_mapping.save_to_files(shared_folder=self.shared_folder)
         #saving object to workspace
         save_object_params = {
             'id': params["workspace_id"],
@@ -99,6 +100,7 @@ class kb_transformData:
         object_reference = str(dfu_oi[6]) + '/' + str(dfu_oi[0]) + '/' + str(dfu_oi[4])
         #object_reference ="75515/13/6"
         objects_created = [{'ref':object_reference,'description': 'data transformed by ' + params['transform_type'] + ' '}]
+        
         reportDirectory = "/kb/module/lib/kb_transformData/reports/"
         
         html_report = list()
@@ -109,13 +111,17 @@ class kb_transformData:
         
        
         attribute_directories = os.path.join(self.shared_folder, "results","attributes")
-        shutil.copy2(os.path.join(self.shared_folder, "results", "original_image.png"),
-                         os.path.join(output_directory, "original_image.png"))
+        
+        #shutil.copy2(os.path.join(self.shared_folder, "results", "original_image.png"),
+                         #os.path.join(output_directory, "original_image.png"))
         attribute_html = ''
         for attribute_dir in attribute_directories:
-            plots_name = attribute_dir + '.png'
-            shutil.copy2(os.path.join(attribute_directories, attribute_dir, plots_name),
-                         os.path.join(output_directory, plots_name))
+            plots_name1 = attribute_dir + '_transformed.png'
+            plots_name2 = attribute_dir + '_original.png'
+            shutil.copy2(os.path.join(attribute_directories, attribute_dir, plots_name1),
+                         os.path.join(output_directory, plots_name1))
+            shutil.copy2(os.path.join(attribute_directories, attribute_dir, plots_name2),
+                         os.path.join(output_directory, plots_name2))
             attribute_name = attribute_dir.replace("_"," ")
             attribute_html += "<button id = \"option\" class = \"attributes\" >"+ attribute_name + "</button>"
         type_transform = ""

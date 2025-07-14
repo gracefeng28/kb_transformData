@@ -3,24 +3,27 @@ import pandas as pd
 from scipy import stats,special
 import numpy as np
 import math
+import matplotlib as plt
 import os
+import seaborn as sns
 from sklearn.preprocessing import PowerTransformer
 
 
 class AttributeMapping:
-    output = {}
-    headings = []
-    instances = {}
-    columns = {}
-    transform_type = None
-    def __init__(self, reference_object = None):
-    
+
+    def __init__(self, shared_folder, reference_object = None):
+        self.output = {}
+        self.headings = []
+        self.instances = {}
+        self.columns = {}
+        self.transform_type = None
         for key,value in reference_object.items():
             self.output.update({key: value})
         
         for element in self.output['data']['attributes']:
             self.headings.append(element['attribute'])
         self.instances = self.output['data']['instances']
+        self.save_to_files(shared_folder)
         
     def print_heading(self):
         print(self.headings)
@@ -197,12 +200,25 @@ class AttributeMapping:
     def save_to_files(self,shared_folder):
         transform_type = ""
         if self.transform_type == None:
-            transform_type = "original"
+            transform_type = "_original"
+        else:
+            transform_type = "_transformed"
         df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
         df.columns = self.headings
-        cols = list(df.columns)
+        cols = list(df.columns)        
         for attribute in cols:
-            filtered_path = os.path.join(shared_folder, attribute,"_", transform_type,'.png')
+            data = (df.loc[:,str(attribute)])
+            filter_nan = [x for x in data if not np.isnan(x)]
+            a = attribute.replace(" ", "_")
+            filtered_path = os.path.join(shared_folder,"results","attributes", a+transform_type +".png")
+            if os.path.isdir(filtered_path) == False:
+                os.mkdir(filtered_path)
+            attribute_df = pd.DataFrame(filter_nan)
+            sns.displot(attribute_df)
+            plt.savefig(filtered_path)
+            plt.close()
+
+
             
     
     

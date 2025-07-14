@@ -188,7 +188,8 @@ buttons.forEach(button => {
         reset()
         console.log(this.textContent); // logs the className of my_element
         innerText = this.textContent.replaceAll(" ", "_")
-        document.getElementById("transformed").src = innerText + ".png"
+        document.getElementById("transformed").src = innerText +"_tranformed"+ ".png"
+        document.getElementById("original").src = innerText +"_original"+ ".png"
         button.style.background = "#04AA6D";
     });
 });

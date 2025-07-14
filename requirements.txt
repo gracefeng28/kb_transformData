@@ -2,3 +2,5 @@ pandas
 numpy == 1.15.4
 scipy
 scikit-learn
+seaborn
+matplotlib
