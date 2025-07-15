@@ -123,12 +123,10 @@ class kb_transformData:
             plots_name1 = attribute_dir + '_transformed.png'
             plots_name2 = attribute_dir + '_original.png'
             #print("Plots_name: ", plots_name1,plots_name2)
-            #os.mkdir(os.path.join(output_directory, plots_name1))
-            #os.mkdir(os.path.join(output_directory, plots_name2))
-            #shutil.copy2(os.path.join(self.shared_folder, "attributes", attribute_dir, plots_name1),
-                         #os.path.join(output_directory, plots_name1))
-            #shutil.copy2(os.path.join(self.shared_folder, "attributes", attribute_dir, plots_name2),
-                         #os.path.join(output_directory, plots_name2))
+            shutil.copy2(os.path.join(self.shared_folder, "attributes", attribute_dir, plots_name1),
+                         os.path.join(output_directory, plots_name1))
+            shutil.copy2(os.path.join(self.shared_folder, "attributes", attribute_dir, plots_name2),
+                         os.path.join(output_directory, plots_name2))
             attribute_name = attribute_dir.replace("_"," ")
             attribute_html += "<button id = \"option\" class = \"attributes\" >"+ attribute_name + "</button>\n"
         type_transform = ""
