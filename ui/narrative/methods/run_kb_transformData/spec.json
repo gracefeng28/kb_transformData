@@ -56,6 +56,16 @@
                 ]
             }
         },{
+        "id": "round_degree",
+        "optional": true,
+        "advanced": true,
+        "allow_multiple": false,
+        "default_values": [ 4 ],
+        "field_type": "text",
+        "text_options": {
+            "validate_as": "int"
+        }
+        },{
         "id": "new_file_name",
         "optional": false,
         "advanced": false,
@@ -86,6 +96,10 @@
                 },{
                     "input_parameter": "transform_type",
                     "target_property": "transform_type"
+                
+                },{
+                    "input_parameter": "round_degree",
+                    "target_property": "round_degree"
                 
                 },{
                     "input_parameter": "new_file_name",

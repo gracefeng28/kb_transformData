@@ -11,7 +11,7 @@ from sklearn.preprocessing import PowerTransformer
 
 class AttributeMapping:
 
-    def __init__(self, shared_folder, reference_object = None):
+    def __init__(self, shared_folder,rd = 4, reference_object = None):
         self.output = {}
         self.headings = []
         self.instances = {}
@@ -19,6 +19,7 @@ class AttributeMapping:
         self.valid_attributes = []
         self.not_valid_attributes = []
         self.transform_type = None
+        self.round_degree = rd;
         for key,value in reference_object.items():
             self.output.update({key: value})
         
@@ -85,7 +86,7 @@ class AttributeMapping:
         _, lmbda = stats.boxcox(filtered_nan)
         #perform box cox transformation
         fitted_data = special.boxcox(float_array,lmbda)
-        fitted_data = fitted_data.round(3)
+        fitted_data = fitted_data.round(self.round_degree)
         print(trait)
         #print(f"Lambda value used for Transformation: {lmbda}")
         str_fitted = []
@@ -107,7 +108,7 @@ class AttributeMapping:
         
         #Box-Cox requires all positive values
         sqrt_array = np.sqrt(float_array)
-        sqrt_array = sqrt_array.round(3)
+        sqrt_array = sqrt_array.round(self.round_degree)
         #perform box cox transformation
         print(trait)
         #print(f"Lambda value used for Transformation: {lmbda}")
@@ -130,7 +131,7 @@ class AttributeMapping:
         
         #Box-Cox requires all positive values
         log_array = np.log(float_array)
-        log_array = log_array.round(3)
+        log_array = log_array.round(self.round_degree)
         #perform box cox transformation
         print(trait)
         #print(f"Lambda value used for Transformation: {lmbda}")
@@ -174,7 +175,7 @@ class AttributeMapping:
                         str_fitted.append("")
                     else:
                         
-                        str_fitted.append(str(round(j,3)))
+                        str_fitted.append(str(round(j,self.round_degree)))
                 self.df.iloc[i] = str_fitted
             #print(df)
             self.transform_type = "yeo-johnson"
@@ -246,7 +247,7 @@ class AttributeMapping:
                 os.mkdir(filtered_path)    
             new_path = os.path.join(filtered_path, a+transform_type +".png")
             attribute_df = pd.DataFrame(filter_nan)
-            sns.displot(attribute_df)
+            sns.displot(attribute_df,color="mediumpurple",legend=False)
             plt.savefig(new_path)
             plt.close()
 

@@ -70,4 +70,5 @@ class kb_transformDataTest(unittest.TestCase):
                                                      'workspace_id' : '75515',
                                                      'transform_type': 'yeo-johnson', 
                                                      'phenotype_data': '75515/3/1',
+                                                     'round_degree': 5,
                                                      'new_file_name': 'ionomics_upload_yj'})

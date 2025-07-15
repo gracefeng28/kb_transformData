@@ -38,6 +38,13 @@ parameters :
             Choose from these normalization methods: box-cox, square root, or logarithmic
         long-hint  : |
             Choose from these normalization methods: box-cox, square root, or logarithmic
+    round_degree :
+        ui-name : |
+            Rounding Degree
+        short-hint : |
+            How many digits should the transformed values be rounded to
+        long-hint  : |
+            How many digits should the transformed values be rounded to
     new_file_name:
         ui-name : |
             Output file name

@@ -16,6 +16,7 @@ module kb_transformData {
         string workspace_id;
 	    string transform_type;
 		trait_mapping phenotype_data;
+        int round_degree;
         string new_file_name;
 	} transformDataInput;
 

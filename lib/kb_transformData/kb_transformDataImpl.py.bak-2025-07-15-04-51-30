@@ -30,7 +30,7 @@ class kb_transformData:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/gracefeng28/kb_transformData.git"
-    GIT_COMMIT_HASH = "7eae36c439534fd3da6cdaab6014db7cf88e71af"
+    GIT_COMMIT_HASH = "9949b3cdeb999f2b3ef5a8a7879e4d686e0036e6"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -57,10 +57,12 @@ class kb_transformData:
            String, parameter "transform_type" of String, parameter
            "phenotype_data" of type "trait_mapping" (KBase style object
            reference X/Y/Z to a @id ws KBaseExperiments.AttributeMapping),
-           parameter "round_degree" of Long, parameter "new_file_name" of
-           String
+           parameter "new_file_name" of String
         :returns: instance of type "ReportResults" -> structure: parameter
-           "report_name" of String, parameter "report_ref" of String
+           "report_name" of String, parameter "report_ref" of String,
+           parameter "transformed_var" of type "trait_mapping" (KBase style
+           object reference X/Y/Z to a @id ws
+           KBaseExperiments.AttributeMapping)
         """
         # ctx is the context object
         # return variables are: output
@@ -85,12 +87,11 @@ class kb_transformData:
         #create new attribute mapping with same data
         folder = os.path.join(self.shared_folder,"attributes")
         os.mkdir(folder)
-        output_mapping = AttributeMapping(folder, rd = params["round_degree"],reference_object=traits)
+        output_mapping = AttributeMapping(folder, reference_object=traits)
         output_mapping.run_test(params['transform_type'])
         output_mapping.save_to_files(shared_folder=folder)
         #print(output_mapping.return_valid())
         #saving object to workspace
-        logging.info("Saving Output to Workspace")
         save_object_params = {
             'id': params["workspace_id"],
             'objects': [{
@@ -105,7 +106,7 @@ class kb_transformData:
         objects_created = [{'ref':object_reference,'description': 'data transformed by ' + params['transform_type'] + ' '}]
         
         reportDirectory = "/kb/module/lib/kb_transformData/reports/"
-        logging.info("Formatting Report")
+        
         html_report = list()
 
         output_directory = os.path.join(self.shared_folder, str(uuid.uuid4()))
@@ -167,7 +168,7 @@ class kb_transformData:
                              allowZip64=True) as zip_file:
             for root, dirs, files in os.walk(result_directory):
                 for file in files:
-                    #print(file)
+                    print(file)
                     if file.endswith('.png'):
                         zip_file.write(os.path.join(root, file), 
                                        os.path.join(os.path.basename(root), file))
