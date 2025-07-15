@@ -137,7 +137,7 @@ div.div1{
 </div>
 
 <div id="Overview" class="tabcontent">
-    <h3>These attributes were transformed with ___ normalization method: </h3>
+    <h3>These attributes were transformed with the TRANSFORMATION_TYPE normalization method: </h3>
     <ul>
         <li>Valid Traits</li>
     </ul>
@@ -152,10 +152,10 @@ div.div1{
   <div style="height: 450px;">
     <div class="div1">
         <h2>Original</h2>
-        <img class = "graph" id = "original"  src=""></div>
+        <img class = "graph" id = "original"  src="" alt = ""></div>
     <div class="div1" >
         <h2 id="transform_label">Transformed (Box-Cox)</h2>
-        <img class = "graph" id = "transformed" src="">
+        <img class = "graph" id = "transformed" src="" alt ="">
     </div>
     
 
@@ -187,8 +187,10 @@ buttons.forEach(button => {
         reset()
         console.log(this.textContent); // logs the className of my_element
         innerText = this.textContent.replaceAll(" ", "_")
-        document.getElementById("transformed").src = innerText +"_tranformed"+ ".png"
+        document.getElementById("transformed").src = innerText +"_transformed"+ ".png"
         document.getElementById("original").src = innerText +"_original"+ ".png"
+        document.getElementById("transformed").alt = innerText +"_transformed"+ ".png"
+        document.getElementById("original").alt = innerText +"_original"+ ".png"
         button.style.background = "#04AA6D";
     });
 });

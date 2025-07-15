@@ -121,6 +121,7 @@ class kb_transformData:
         for attribute_dir in attribute_directories:
             plots_name1 = attribute_dir + '_transformed.png'
             plots_name2 = attribute_dir + '_original.png'
+            print("Plots_name: ", plots_name1,plots_name2)
             os.mkdir(os.path.join(output_directory, plots_name1))
             os.mkdir(os.path.join(output_directory, plots_name2))
             shutil.copy2(os.path.join(self.shared_folder, "attributes", attribute_dir, plots_name1),
@@ -174,7 +175,7 @@ class kb_transformData:
             'message': message_in_app,
             'direct_html_link_index': 0,
             'html_links': html_report,
-            'html_window_height': 475,
+            'html_window_height': 500,
             'report_object_name': report_name,
             'objects_created': objects_created,
             'workspace_name': params["workspace_name"]
