@@ -3,6 +3,7 @@
 import logging
 import os
 import uuid
+import zipfile
 import shutil
 from installed_clients.KBaseReportClient import KBaseReport
 from installed_clients.WorkspaceClient import Workspace
@@ -121,13 +122,13 @@ class kb_transformData:
         for attribute_dir in attribute_directories:
             plots_name1 = attribute_dir + '_transformed.png'
             plots_name2 = attribute_dir + '_original.png'
-            print("Plots_name: ", plots_name1,plots_name2)
-            os.mkdir(os.path.join(output_directory, plots_name1))
-            os.mkdir(os.path.join(output_directory, plots_name2))
-            shutil.copy2(os.path.join(self.shared_folder, "attributes", attribute_dir, plots_name1),
-                         os.path.join(output_directory, plots_name1))
-            shutil.copy2(os.path.join(self.shared_folder, "attributes", attribute_dir, plots_name2),
-                         os.path.join(output_directory, plots_name2))
+            #print("Plots_name: ", plots_name1,plots_name2)
+            #os.mkdir(os.path.join(output_directory, plots_name1))
+            #os.mkdir(os.path.join(output_directory, plots_name2))
+            #shutil.copy2(os.path.join(self.shared_folder, "attributes", attribute_dir, plots_name1),
+                         #os.path.join(output_directory, plots_name1))
+            #shutil.copy2(os.path.join(self.shared_folder, "attributes", attribute_dir, plots_name2),
+                         #os.path.join(output_directory, plots_name2))
             attribute_name = attribute_dir.replace("_"," ")
             attribute_html += "<button id = \"option\" class = \"attributes\" >"+ attribute_name + "</button>\n"
         type_transform = ""
@@ -161,13 +162,30 @@ class kb_transformData:
                 report_template = report_template.replace('<li>Binary Traits</li>',
                                                           not_valid_traits_html)
                 result_file.write(report_template)
-        
+        result_directory = os.path.join(self.shared_folder, "attributes")
+        plot_file = os.path.join(output_directory, 'transform_plot.zip')
+        output_files = list()
+        with zipfile.ZipFile(plot_file, 'w',
+                             zipfile.ZIP_DEFLATED,
+                             allowZip64=True) as zip_file:
+            for root, dirs, files in os.walk(result_directory):
+                for file in files:
+                    print(file)
+                    if file.endswith('.png'):
+                        zip_file.write(os.path.join(root, file), 
+                                       os.path.join(os.path.basename(root), file))
+
+        output_files.append({'path': plot_file,
+                             'name': os.path.basename(plot_file),
+                             'label': os.path.basename(plot_file),
+                             'description': 'Visualization plots by transform Data App'})
         report_shock_id = self.dfu.file_to_shock({'file_path': output_directory,
                                                   'pack': 'zip'})['shock_id']
         html_report.append({'shock_id': report_shock_id,
                             'name': os.path.basename(result_file_path),
                             'label': os.path.basename(result_file_path),
-                            'description': 'HTML summary report for Transform data App'})
+                            'description': 'HTML summary report for transform data app'})
+        print(os.listdir(output_directory))
         report_name = 'kb_transformData_report_' + str(uuid.uuid4())
         kbase_report_client = KBaseReport(self.callback_url)
         message_in_app = f"Successfully performed {type_transform} transformation\n"
@@ -175,6 +193,7 @@ class kb_transformData:
             'message': message_in_app,
             'direct_html_link_index': 0,
             'html_links': html_report,
+            'file_links': output_files,
             'html_window_height': 500,
             'report_object_name': report_name,
             'objects_created': objects_created,
