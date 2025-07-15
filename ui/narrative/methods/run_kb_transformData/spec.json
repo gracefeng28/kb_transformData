@@ -46,6 +46,12 @@
                         "display": "Logarithmic",
                         "id": "log",
                         "ui_name": "Logarithmic"
+                    },
+                    {
+                        "value": "yeo-johnson",
+                        "display": "Yeo-Johnson",
+                        "id": "yeo-johnson",
+                        "ui_name": "Yeo-Johnson"
                     }
                 ]
             }
@@ -78,7 +84,8 @@
                     "target_property": "phenotype_data"
                 },{
                     "input_parameter": "transform_type",
-                    "target_property": "transform_type"
+                    "target_property": "transform_type",
+                    "target_type_transform": "resolved-ref"
                 },{
                     "input_parameter": "new_file_name",
                     "target_property": "new_file_name"
