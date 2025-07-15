@@ -58,7 +58,7 @@ button.attributes{
     font-size: 17px;
     border-width: 1px,3px,1px,3px;
     border-color: rgb(110, 110, 110);
-    background-color: rgb(201, 208, 213);
+    background-color: rgb(220, 227, 232);
 }
 button.attributes:hover {
   background-color: #04AA6D !important;
@@ -179,7 +179,7 @@ document.getElementById("transform_label").innerHTML = message;
 const buttons = document.querySelectorAll('#option');
 function reset(){
     buttons.forEach(button => {
-        button.style.background = "rgb(201, 208, 213)";
+        button.style.background = "rgb(220, 227, 232)";
     });
 }
 
@@ -192,7 +192,7 @@ buttons.forEach(button => {
         document.getElementById("original").src = innerText +"_original"+ ".png"
         document.getElementById("transformed").alt = innerText +"_transformed"+ ".png"
         document.getElementById("original").alt = innerText +"_original"+ ".png"
-        document.getElementById("transform_label").innerHTML = message + "("+innerText+")";
+        document.getElementById("transform_label").innerHTML = message + " ("+innerText+")";
         document.getElementById("original_label").innerHTML = "Original ("+innerText+")";
         button.style.background = "#04AA6D";
     });

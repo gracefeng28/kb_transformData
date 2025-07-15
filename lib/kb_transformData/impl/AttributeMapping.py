@@ -247,7 +247,7 @@ class AttributeMapping:
                 os.mkdir(filtered_path)    
             new_path = os.path.join(filtered_path, a+transform_type +".png")
             attribute_df = pd.DataFrame(filter_nan)
-            sns.displot(attribute_df,color="mediumpurple",legend=False)
+            sns.displot(attribute_df,legend=False)
             plt.savefig(new_path)
             plt.close()
 
