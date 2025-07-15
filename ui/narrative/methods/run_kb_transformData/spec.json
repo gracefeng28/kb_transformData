@@ -23,7 +23,7 @@
         },{
             "id": "transform_type",
             "optional": false,
-            "advanced": true,
+            "advanced": false,
             "allow_multiple": false,
             "default_values": [ "box-cox" ],
             "field_type": "dropdown",
