@@ -128,10 +128,10 @@ class kb_transformData:
             shutil.copy2(os.path.join(self.shared_folder, "attributes", attribute_dir, plots_name2),
                          os.path.join(output_directory, plots_name2))
             attribute_name = attribute_dir.replace("_"," ")
-            attribute_html += "<button id = \"option\" class = \"attributes\" >"+ attribute_name + "</button>"
+            attribute_html += "<button id = \"option\" class = \"attributes\" >"+ attribute_name + "</button>\n"
         type_transform = ""
         if (params["transform_type"]=="box-cox"):
-            type_transform = "Box Cox"
+            type_transform = "Box-Cox"
         elif (params["transform_type"]=="sqrt"):
             type_transform = "Square Root"
         elif (params["transform_type"]=="log"):
@@ -143,9 +143,9 @@ class kb_transformData:
         vt = output_mapping.valid_attributes
         nvt = output_mapping.not_valid_attributes
         for v in vt:
-            valid_traits_html += "<li>" +v+ "</li>"
+            valid_traits_html += "<li>" +v+ "</li> \n"
         for nv in nvt:
-            not_valid_traits_html += "<li>" +nv+ "</li>"
+            not_valid_traits_html += "<li>" +nv+ "</li> \n"
         with open(result_file_path, 'w') as result_file:
             with open(os.path.join(reportDirectory, 'template.html'),
                       'r') as report_template_file:
