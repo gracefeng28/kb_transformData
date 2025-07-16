@@ -46,7 +46,7 @@ div.options {
     overflow: scroll; 
     background-color: rgb(200, 205, 215); 
     width: 25%;
-    height: 350px;
+    height: 400px;
     float: right;
     margin-top: 3%;
 }
@@ -55,14 +55,14 @@ button.attributes{
     height: 50px;
     padding: 5px;
     text-align: center;
-    font-size: 17px;
+    font-size: 20px;
     border-width: 1px,3px,1px,3px;
     border-color: rgb(110, 110, 110);
     background-color: rgb(220, 227, 232);
 }
 button.attributes:hover {
   background-color: #04AA6D !important;
-  color: white;
+  color: white !important;
 }
 /* Fade in tabs */
 @-webkit-keyframes fadeEffect {
@@ -113,7 +113,7 @@ div.desc {
 }
 img.graph {
     max-height: 90%;
-    width: 100%;
+    max-width: 100%;
 }
 h2 {
     text-align: center;
@@ -122,9 +122,11 @@ div.div1{
     float:left; 
     margin-right:10px;
     max-width: 36%;
-    height: 400px;
+    height: 450px;
 }
-
+li {
+    font-size: 18px;
+}
 </style>
 </head>
 <body>
@@ -149,7 +151,7 @@ div.div1{
 
 <div id="Visualization" class="tabcontent">
   <!--<p>Visualization_Content</p>-->
-  <div style="height: 450px;">
+  <div style="height: 500px;">
     <div class="div1">
         <h2 id="original_label">Original</h2>
         <img class = "graph" id = "original"  src="" alt = ""></div>
@@ -195,6 +197,7 @@ buttons.forEach(button => {
         document.getElementById("transform_label").innerHTML = message + " ("+innerText+")";
         document.getElementById("original_label").innerHTML = "Original ("+innerText+")";
         button.style.background = "#04AA6D";
+        button.style.color = "white";
     });
 });
 document.querySelector('#option').click();

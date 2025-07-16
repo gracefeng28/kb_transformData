@@ -30,7 +30,7 @@ class kb_transformData:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/gracefeng28/kb_transformData.git"
-    GIT_COMMIT_HASH = "308db966cfef302b7388e71fa8a5832b7ebb7cca"
+    GIT_COMMIT_HASH = "7eae36c439534fd3da6cdaab6014db7cf88e71af"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER

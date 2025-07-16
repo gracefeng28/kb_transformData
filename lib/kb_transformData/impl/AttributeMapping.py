@@ -30,17 +30,19 @@ class AttributeMapping:
         self.df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
         self.df.columns = self.headings
         cols = list(self.df.columns)
+        count = 0
         for col in cols:
             data = list(self.df.loc[:,str(col)])
-            float_set = set()
+            string_set = set()
             for datum in data:
                 try:
-                    float_set.add(float(datum))
-                    if len(float_set)>2:
+                    string_set.add(datum)
+                except:
+                    count+=1
+                finally:
+                    if len(string_set)>2:
                         break
-                except ValueError:
-                    float_set.add(np.nan)
-            if len(float_set)>2:
+            if len(string_set)>2:
                 self.valid_attributes.append(col)
             else:
                 self.not_valid_attributes.append(col)

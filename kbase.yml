@@ -2,7 +2,7 @@ module-name:
     kb_transformData
 
 module-description:
-    A KBase module that normalizes continuous phenotypic data. Users can choose one of four transformations- box-cox, square root, logarithmic, and INT.
+    A KBase module that normalizes continuous phenotypic data. Users can choose one of four transformations- box-cox, square root, logarithmic, and yeo-johnson.
 
 service-language:
     python
