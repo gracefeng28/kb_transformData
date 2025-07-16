@@ -191,7 +191,7 @@ class kb_transformData:
             'direct_html_link_index': 0,
             'html_links': html_report,
             'file_links': output_files,
-            'html_window_height': 550,
+            'html_window_height': 600,
             'report_object_name': report_name,
             'objects_created': objects_created,
             'workspace_name': params["workspace_name"]
