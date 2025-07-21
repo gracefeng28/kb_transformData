@@ -241,7 +241,7 @@ class AttributeMapping:
             filter_nan = [x for x in float_array if not np.isnan(x)]
             #print(stats.skew(filter_nan))
             temp_skew = stats.skew(filter_nan)
-            temp_skew = temp_skew.round(4)
+            temp_skew = round(temp_skew,4)
             output_dict.update({attribute:temp_skew})
             
         if self.transform_type == None:
