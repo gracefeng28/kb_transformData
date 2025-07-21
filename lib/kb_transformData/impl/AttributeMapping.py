@@ -19,7 +19,9 @@ class AttributeMapping:
         self.valid_attributes = []
         self.not_valid_attributes = []
         self.transform_type = None
-        self.round_degree = rd;
+        self.skew_dict_original = {}
+        self.skew_dict_transform = {}
+        self.round_degree = rd
         for key,value in reference_object.items():
             self.output.update({key: value})
         
@@ -46,6 +48,7 @@ class AttributeMapping:
                 self.valid_attributes.append(col)
             else:
                 self.not_valid_attributes.append(col)
+        self.save_skews()
         self.save_to_files(shared_folder)
         
     def print_heading(self):
@@ -224,6 +227,29 @@ class AttributeMapping:
             if (min(float_itemset)<0):
                 return (False,"All values must be at least 0 (sqrt)")
         return (True,"passes tests")
+    def save_skews(self):
+        df = self.df 
+        output_dict = {}
+        for attribute in self.valid_attributes:
+            data = (df.loc[:,str(attribute)])
+            float_array = []
+            for datum in data:
+                try:
+                    float_array.append(float(datum))
+                except ValueError:
+                    float_array.append(np.nan)
+            filter_nan = [x for x in float_array if not np.isnan(x)]
+            #print(stats.skew(filter_nan))
+            output_dict.update({attribute:stats.skew(filter_nan)})
+            
+        if self.transform_type == None:
+            self.skew_dict_original = output_dict
+        else:
+            self.skew_dict_transform = output_dict
+    def get_original_skew(self):
+        return self.skew_dict_original
+    def get_transform_skew(self):
+        return self.skew_dict_transform
     
     def save_to_files(self,shared_folder):
         transform_type = ""

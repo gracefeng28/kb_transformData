@@ -87,6 +87,7 @@ class kb_transformData:
         os.mkdir(folder)
         output_mapping = AttributeMapping(folder, rd = params["round_degree"],reference_object=traits)
         output_mapping.run_test(params['transform_type'])
+        output_mapping.save_skews()
         output_mapping.save_to_files(shared_folder=folder)
         #print(output_mapping.return_valid())
         #saving object to workspace
@@ -139,6 +140,12 @@ class kb_transformData:
             type_transform = "Yeo-Johnson"
         valid_traits_html= ""
         not_valid_traits_html = ""
+        before_dict_html = ""
+        for k,v in output_mapping.get_original_skew().items():
+            before_dict_html+= "skew_mapping_before.set("+ str(k)+","+ str(v)+"); \n"
+        after_dict_html = ""
+        for k,v in output_mapping.get_transform_skew().items():
+            after_dict_html+= "skew_mapping_after.set("+ str(k)+","+ str(v)+"); \n"
         vt = output_mapping.valid_attributes
         nvt = output_mapping.not_valid_attributes
         for v in vt:
@@ -158,6 +165,10 @@ class kb_transformData:
                                                           valid_traits_html)
                 report_template = report_template.replace('<li>Binary Traits</li>',
                                                           not_valid_traits_html)
+                report_template = report_template.replace('//Before_code_here',
+                                                          before_dict_html)
+                report_template = report_template.replace('//After_code_here',
+                                                          after_dict_html)
                 result_file.write(report_template)
         result_directory = os.path.join(self.shared_folder, "attributes")
         plot_file = os.path.join(output_directory, 'transform_plot.zip')
