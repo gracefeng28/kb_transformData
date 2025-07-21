@@ -145,7 +145,7 @@ class kb_transformData:
             before_dict_html+= "skew_mapping_before.set( \""+ str(k)+"\",\""+ str(v)+"\"); \n"
         after_dict_html = ""
         for k,v in output_mapping.get_transform_skew().items():
-            after_dict_html+= "skew_mapping_after.set("+ str(k)+","+ str(v)+"); \n"
+            after_dict_html+= "skew_mapping_after.set( \""+ str(k)+"\",\""+ str(v)+"\"); \n"
         vt = output_mapping.valid_attributes
         nvt = output_mapping.not_valid_attributes
         for v in vt:
