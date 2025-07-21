@@ -142,7 +142,7 @@ class kb_transformData:
         not_valid_traits_html = ""
         before_dict_html = ""
         for k,v in output_mapping.get_original_skew().items():
-            before_dict_html+= "skew_mapping_before.set("+ str(k)+","+ str(v)+"); \n"
+            before_dict_html+= "skew_mapping_before.set( \""+ str(k)+"\",\""+ str(v)+"\"); \n"
         after_dict_html = ""
         for k,v in output_mapping.get_transform_skew().items():
             after_dict_html+= "skew_mapping_after.set("+ str(k)+","+ str(v)+"); \n"
