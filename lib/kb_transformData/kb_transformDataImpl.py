@@ -88,7 +88,7 @@ class kb_transformData:
         output_mapping = AttributeMapping(folder, rd = params["round_degree"],reference_object=traits)
         if (params['transform_type']!="none"):
             for i in params['attributes_to_filter']:
-                output_mapping.filter_column(attribute=i['selected_traits'],min = i['min'],max = i['max'])
+                output_mapping.filter_column(attribute=i['selected_traits'][0],min = i['min'],max = i['max'])
             output_mapping.run_test(params['transform_type'])
             output_mapping.save_sumstats()
         output_mapping.save_to_files(shared_folder=folder)

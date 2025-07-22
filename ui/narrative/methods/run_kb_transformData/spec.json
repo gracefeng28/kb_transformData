@@ -45,7 +45,7 @@
                 "options": [
                     {
                         "value": "none",
-                        "display": "None",
+                        "display": "None (View Only, no output)",
                         "id": "none",
                         "ui_name": "None"
                     },
