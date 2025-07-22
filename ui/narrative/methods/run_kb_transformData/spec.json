@@ -14,7 +14,8 @@
         "id": "attributes_to_filter",
         "parameters": [
             "selected_traits",
-            "min"
+            "min",
+            "max"
         ],
         "optional": true,
         "advanced": false,
