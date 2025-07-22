@@ -65,7 +65,7 @@ class kb_transformData:
         # ctx is the context object
         # return variables are: output
         #BEGIN run_kb_transformData
-        print(params['phenotype_data'], params['transform_type'], params['workspace_name'])
+        print(params['phenotype_data'], params['transform_type'], params['workspace_name'],params['selected_traits'])
         if 'phenotype_data' not in params:
             raise ValueError('Phenotype Data Kbase reference is not set')
         if 'transform_type' not in params:
