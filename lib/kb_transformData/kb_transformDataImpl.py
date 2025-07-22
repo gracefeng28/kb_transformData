@@ -88,7 +88,8 @@ class kb_transformData:
         output_mapping = AttributeMapping(folder, rd = params["round_degree"],reference_object=traits)
         if (params['transform_type']!="none"):
             for i in params['attributes_to_filter']:
-                output_mapping.filter_column(attribute=i['selected_traits'][0],min = i['min'],max = i['max'])
+                if (len(i['selected_traits'])!= 0):
+                    output_mapping.filter_column(attribute=i['selected_traits'][0],min = i['min'],max = i['max'])
             output_mapping.run_test(params['transform_type'])
             output_mapping.save_sumstats()
         output_mapping.save_to_files(shared_folder=folder)
@@ -151,7 +152,7 @@ class kb_transformData:
             after_dict_html = ""
             for k,v in output_mapping.get_transform_sumstats().items():
                 after_dict_html+= "skew_mapping_after.set( \""+ str(k)+"\",\""+ str(v[0])+"\"); \n"
-                after_dict_html+= "skew_mapping_after.set( \""+ str(k)+"\",\""+ str(v[1])+"\"); \n"
+                after_dict_html+= "bounds_mapping_after.set( \""+ str(k)+"\",\""+ str(v[1])+"\"); \n"
             
             vt = output_mapping.valid_attributes
             nvt = output_mapping.not_valid_attributes

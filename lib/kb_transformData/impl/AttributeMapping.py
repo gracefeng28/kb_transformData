@@ -274,8 +274,8 @@ class AttributeMapping:
             output_list.append(temp_skew)
             Q1 = np.percentile(filter_nan, 25)
             Q3 = np.percentile(filter_nan, 75)
-            lower_bound = (Q3-Q1)*-1.5 +  Q1
-            upper_bound = (Q3-Q1)*1.5 +  Q3
+            lower_bound = round((Q3-Q1)*-1.5 +  Q1,5)
+            upper_bound = round((Q3-Q1)*1.5 +  Q3,5)
             bounds = tuple([lower_bound,upper_bound])
             output_list.append(bounds)
             output_dict.update({attribute:output_list})
