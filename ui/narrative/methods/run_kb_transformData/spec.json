@@ -115,7 +115,18 @@
         }
         },{
         "id": "min",
-        "optional": false,
+        "optional": true,
+        "advanced": false,
+        "allow_multiple": false,
+        "default_values": [ ],
+        "field_type": "text",
+        "text_options": {
+            "validate_as": "int"
+        }
+        }
+        ,{
+        "id": "max",
+        "optional": true,
         "advanced": false,
         "allow_multiple": false,
         "default_values": [ ],
@@ -164,6 +175,12 @@
                 {
                     "input_parameter": "min",
                     "target_property": "min"
+                
+                }
+                ,
+                {
+                    "input_parameter": "max",
+                    "target_property": "max"
                 
                 }
             ],

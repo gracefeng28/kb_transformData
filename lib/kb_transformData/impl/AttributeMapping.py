@@ -19,8 +19,8 @@ class AttributeMapping:
         self.valid_attributes = []
         self.not_valid_attributes = []
         self.transform_type = None
-        self.skew_dict_original = {}
-        self.skew_dict_transform = {}
+        self.sumstats_dict_original = {}
+        self.sumstats_dict_transform = {}
         self.round_degree = rd
         for key,value in reference_object.items():
             self.output.update({key: value})
@@ -48,7 +48,7 @@ class AttributeMapping:
                 self.valid_attributes.append(col)
             else:
                 self.not_valid_attributes.append(col)
-        self.save_skews()
+        self.save_sumstats()
         self.save_to_files(shared_folder)
         
     def print_heading(self):
@@ -227,7 +227,35 @@ class AttributeMapping:
             if (min(float_itemset)<0):
                 return (False,"All values must be at least 0 (sqrt)")
         return (True,"passes tests")
-    def save_skews(self):
+    def filter_column(self, attribute, min = None, max = None):
+        data = (self.df.loc[:,str(attribute)])
+        float_array = []
+        for datum in data:
+            evaluate = True
+            try:
+                if (float(datum)== np.nan):
+                    evaluate = False
+                if (min and float(datum)<min):
+                    evaluate = False
+                if (max and float(datum)> max):
+                    evaluate = False
+                if (evaluate):
+                    float_array.append(float(datum))
+                else:
+                    float_array.append(np.nan)
+                
+            except ValueError:
+                float_array.append(np.nan)
+        str_fitted = []
+        for j in float_array:
+            if (np.isnan(j)):
+                str_fitted.append("")
+            else:
+                str_fitted.append(str(j))
+        self.df.loc[:,str(attribute)] = str_fitted
+        
+
+    def save_sumstats(self):
         df = self.df 
         output_dict = {}
         for attribute in self.valid_attributes:
@@ -240,18 +268,29 @@ class AttributeMapping:
                     float_array.append(np.nan)
             filter_nan = [x for x in float_array if not np.isnan(x)]
             #print(stats.skew(filter_nan))
+            output_list = []
             temp_skew = stats.skew(filter_nan)
             temp_skew = round(temp_skew,4)
-            output_dict.update({attribute:temp_skew})
+            output_list.append(temp_skew)
+            Q1 = np.percentile(filter_nan, 25)
+            Q3 = np.percentile(filter_nan, 75)
+            lower_bound = (Q3-Q1)*-1.5 +  Q1
+            upper_bound = (Q3-Q1)*1.5 +  Q3
+            bounds = tuple([lower_bound,upper_bound])
+            output_list.append(bounds)
+            output_dict.update({attribute:output_list})
             
         if self.transform_type == None:
-            self.skew_dict_original = output_dict
+            self.sumstats_dict_original = output_dict
         else:
-            self.skew_dict_transform = output_dict
-    def get_original_skew(self):
-        return self.skew_dict_original
-    def get_transform_skew(self):
-        return self.skew_dict_transform
+            self.sumstats_dict_transform = output_dict
+    def get_original_sumstats(self):
+        return self.sumstats_dict_original
+    def get_transform_sumstats(self):
+        try:
+            return self.sumstats_dict_transform
+        except IndexError:
+            print("Transformation has not been performed")
     
     def save_to_files(self,shared_folder):
         transform_type = ""

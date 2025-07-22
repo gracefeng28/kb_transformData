@@ -87,8 +87,10 @@ class kb_transformData:
         os.mkdir(folder)
         output_mapping = AttributeMapping(folder, rd = params["round_degree"],reference_object=traits)
         if (params['transform_type']!="none"):
+            for i in params['attributes_to_filter']:
+                output_mapping.filter_column(attribute=i['selected_traits'],min = i['min'],max = i['max'])
             output_mapping.run_test(params['transform_type'])
-            output_mapping.save_skews()
+            output_mapping.save_sumstats()
         output_mapping.save_to_files(shared_folder=folder)
         #print(output_mapping.return_valid())
         #saving object to workspace
@@ -143,11 +145,14 @@ class kb_transformData:
             valid_traits_html= ""
             not_valid_traits_html = ""
             before_dict_html = ""
-            for k,v in output_mapping.get_original_skew().items():
-                before_dict_html+= "skew_mapping_before.set( \""+ str(k)+"\",\""+ str(v)+"\"); \n"
+            for k,v in output_mapping.get_original_sumstats().items():
+                before_dict_html+= "skew_mapping_before.set( \""+ str(k)+"\",\""+ str(v[0])+"\"); \n"
+                before_dict_html+= "bounds_mapping_before.set( \""+ str(k)+"\",\""+ str(v[1])+"\"); \n"
             after_dict_html = ""
-            for k,v in output_mapping.get_transform_skew().items():
-                after_dict_html+= "skew_mapping_after.set( \""+ str(k)+"\",\""+ str(v)+"\"); \n"
+            for k,v in output_mapping.get_transform_sumstats().items():
+                after_dict_html+= "skew_mapping_after.set( \""+ str(k)+"\",\""+ str(v[0])+"\"); \n"
+                after_dict_html+= "skew_mapping_after.set( \""+ str(k)+"\",\""+ str(v[1])+"\"); \n"
+            
             vt = output_mapping.valid_attributes
             nvt = output_mapping.not_valid_attributes
             for v in vt:
@@ -243,11 +248,10 @@ class kb_transformData:
             valid_traits_html= ""
             not_valid_traits_html = ""
             before_dict_html = ""
-            for k,v in output_mapping.get_original_skew().items():
-                before_dict_html+= "skew_mapping_before.set( \""+ str(k)+"\",\""+ str(v)+"\"); \n"
-            after_dict_html = ""
-            for k,v in output_mapping.get_transform_skew().items():
-                after_dict_html+= "skew_mapping_after.set( \""+ str(k)+"\",\""+ str(v)+"\"); \n"
+            for k,v in output_mapping.get_original_sumstats().items():
+                before_dict_html+= "skew_mapping_before.set( \""+ str(k)+"\",\""+ str(v[0])+"\"); \n"
+                before_dict_html+= "bounds_mapping_before.set( \""+ str(k)+"\",\""+ str(v[1])+"\"); \n"
+            
             vt = output_mapping.valid_attributes
             nvt = output_mapping.not_valid_attributes
             for v in vt:
@@ -255,13 +259,12 @@ class kb_transformData:
             for nv in nvt:
                 not_valid_traits_html += "<li>" +nv+ "</li> \n"
             with open(result_file_path, 'w') as result_file:
-                with open(os.path.join(reportDirectory, 'transform_template.html'),
+                with open(os.path.join(reportDirectory, 'view_template.html'),
                         'r') as report_template_file:
                     report_template = report_template_file.read()
                     report_template = report_template.replace('<p>ATTRIBUTES</p>',
                                                             attribute_html)
                     
-
                     report_template = report_template.replace('//Before_code_here',
                                                             before_dict_html)
                 

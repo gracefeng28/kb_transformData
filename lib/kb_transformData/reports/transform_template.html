@@ -156,11 +156,13 @@ li {
         <h2 id="original_label">Original</h2>
         <img class = "graph" id = "original"  src="" alt = "">
         <h3 id="skew_original">Skew: </h3>
+        <h3 id="bounds_original">Skew: </h3>
     </div>
     <div class="div1" >
         <h2 id="transform_label">Transformed (Box-Cox)</h2>
         <img class = "graph" id = "transformed" src="" alt ="">
         <h3 id="skew_transform">Skew: </h3>
+        <h3 id="bounds_transform">Skew: </h3>
     </div>
     
 
@@ -178,6 +180,8 @@ li {
 let message = "Transformed: " + "TRANSFORMATION_TYPE";
 let skew_mapping_before = new Map();
 let skew_mapping_after = new Map();
+let bounds_mapping_before = new Map();
+let bounds_mapping_after = new Map();
 //Before_code_here
 
 //After_code_here
@@ -207,6 +211,8 @@ buttons.forEach(button => {
         document.getElementById("original_label").innerHTML = "Original ("+innerText+")";
         document.getElementById("skew_original").innerHTML = "Original Skew: "+skew_mapping_before.get(innerText);
         document.getElementById("skew_transform").innerHTML = "Transformed Skew: "+skew_mapping_after.get(innerText);
+         document.getElementById("bounds_original").innerHTML = "Outlier Range: "+bounds_mapping_before.get(innerText);
+        document.getElementById("bounds_transform").innerHTML = "Outlier Range: "+bounds_mapping_after.get(innerText);
         button.style.background = "#04AA6D";
         button.style.color = "white";
     });

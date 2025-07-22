@@ -66,6 +66,13 @@ parameters :
             Min Value
         long-hint  : |
             Min Value
+    max:
+        ui-name : |
+            Max Value
+        short-hint : |
+            Max Value
+        long-hint  : |
+            Max Value
 parameter-groups:
     attributes_to_filter:
         ui-name: |
