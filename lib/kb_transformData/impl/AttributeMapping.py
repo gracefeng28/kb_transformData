@@ -235,9 +235,9 @@ class AttributeMapping:
             try:
                 if (float(datum)== np.nan):
                     evaluate = False
-                if (min and float(datum)<min):
+                if ((min is None) or float(datum)<min):
                     evaluate = False
-                if (max and float(datum)> max):
+                if ((max is None) or float(datum)> max):
                     evaluate = False
                 if (evaluate):
                     float_array.append(float(datum))
@@ -280,7 +280,7 @@ class AttributeMapping:
             output_list.append(bounds)
             output_dict.update({attribute:output_list})
             
-        if self.transform_type == None:
+        if self.transform_type is None:
             self.sumstats_dict_original = output_dict
         else:
             self.sumstats_dict_transform = output_dict

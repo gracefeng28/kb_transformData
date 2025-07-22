@@ -70,9 +70,8 @@ class kb_transformData:
             raise ValueError('Phenotype Data Kbase reference is not set')
         if 'transform_type' not in params:
             raise ValueError('Transformation type is not selected.')
-        if 'new_file_name' not in params:
+        if 'new_file_name' == "":
             params.update({'new_file_name':"traits_"+params['transform_type']})
-
         #w = Workspace(self.callback_url)
         #print(w.get_workspace_description('gracefeng:narrative_1751308811409'))
 
@@ -87,11 +86,16 @@ class kb_transformData:
         os.mkdir(folder)
         output_mapping = AttributeMapping(folder, rd = params["round_degree"],reference_object=traits)
         if (params['transform_type']!="none"):
+
             for i in params['attributes_to_filter']:
                 if (len(i['selected_traits'])!= 0):
                     output_mapping.filter_column(attribute=i['selected_traits'][0],min = i['min'],max = i['max'])
             output_mapping.run_test(params['transform_type'])
             output_mapping.save_sumstats()
+        else:
+            if (len(i['selected_traits'])!= 0):
+                raise ValueError('Do not add filters while in view mode.')
+        
         output_mapping.save_to_files(shared_folder=folder)
         #print(output_mapping.return_valid())
         #saving object to workspace
