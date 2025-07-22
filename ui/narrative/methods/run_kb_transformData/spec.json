@@ -16,7 +16,7 @@
             "selected_traits",
             "min"
         ],
-        "optional": false,
+        "optional": true,
         "advanced": false,
         "allow_multiple": true,
         "with_border": true
@@ -38,10 +38,16 @@
             "optional": false,
             "advanced": false,
             "allow_multiple": false,
-            "default_values": [ "box-cox" ],
+            "default_values": [ "none" ],
             "field_type": "dropdown",
             "dropdown_options": {
                 "options": [
+                    {
+                        "value": "none",
+                        "display": "None",
+                        "id": "none",
+                        "ui_name": "None"
+                    },
                     {
                         "value": "box-cox",
                         "display": "Box-Cox",
@@ -99,7 +105,7 @@
         }
         },{
         "id": "new_file_name",
-        "optional": false,
+        "optional": true,
         "advanced": false,
         "allow_multiple": false,
         "default_values": [ ],
