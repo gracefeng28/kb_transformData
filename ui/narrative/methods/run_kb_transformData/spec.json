@@ -9,6 +9,19 @@
         "input": null,
         "output": "no-display"
     },
+    "parameter-groups": [
+    {
+        "id": "attributes_to_filter",
+        "parameters": [
+            "selected_traits",
+            "min"
+        ],
+        "optional": true,
+        "advanced": true,
+        "allow_multiple": true,
+        "with_border": true
+    }
+    ],
     "parameters": [ 
         {
             "id": "phenotype_data",
@@ -94,20 +107,19 @@
         "text_options": {
             "validate_as": "str"
         }
+        },{
+        "id": "min",
+        "optional": false,
+        "advanced": false,
+        "allow_multiple": false,
+        "default_values": [ ],
+        "field_type": "text",
+        "text_options": {
+            "validate_as": "int"
+        }
         }
     ],
-    "parameter-groups": [
-    {
-        "id": "attributes_to_filter",
-        "parameters": [
-            "selected_traits"
-        ],
-        "optional": true,
-        "advanced": true,
-        "allow_multiple": true,
-        "with_border": true
-    }
-    ],
+
     "behavior": {
         "service-mapping": {
             "url": "",
@@ -142,6 +154,11 @@
                 },{
                     "input_parameter": "new_file_name",
                     "target_property": "new_file_name"
+                },
+                {
+                    "input_parameter": "min",
+                    "target_property": "min"
+                
                 }
             ],
             "output_mapping": [

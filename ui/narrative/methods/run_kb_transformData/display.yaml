@@ -59,6 +59,13 @@ parameters :
             Select traits to filter outputs
         long-hint  : |
             Select the traits to apply a minimum and maximum filter to
+    min:
+        ui-name : |
+            Min Value
+        short-hint : |
+            Min Value
+        long-hint  : |
+            Min Value
 parameter-groups:
     attributes_to_filter:
         ui-name: |
