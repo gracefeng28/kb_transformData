@@ -9,13 +9,12 @@ module kb_transformData {
         @id ws KBaseExperiments.AttributeMapping
     */
     typedef string trait_mapping;
-
-
 	typedef structure {
 	    string workspace_name;
         string workspace_id;
 	    string transform_type;
 		trait_mapping phenotype_data;
+        list<mapping<string, string>> attributes_to_filter;
         int round_degree;
         string new_file_name;
 	} transformDataInput;

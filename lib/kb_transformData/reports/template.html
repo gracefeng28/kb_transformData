@@ -151,7 +151,7 @@ li {
 
 <div id="Visualization" class="tabcontent">
   <!--<p>Visualization_Content</p>-->
-  <div style="height: 500px;">
+  <div style="height: 600px;">
     <div class="div1">
         <h2 id="original_label">Original</h2>
         <img class = "graph" id = "original"  src="" alt = "">
@@ -205,8 +205,8 @@ buttons.forEach(button => {
         document.getElementById("original").alt = innerText +"_original"+ ".png"
         document.getElementById("transform_label").innerHTML = message + " ("+innerText+")";
         document.getElementById("original_label").innerHTML = "Original ("+innerText+")";
-        document.getElementById("skew_original").innerHTML = "Skew: "+skew_mapping_before.get(innerText);
-        document.getElementById("skew_transform").innerHTML = "Skew: "+skew_mapping_after.get(innerText);
+        document.getElementById("skew_original").innerHTML = "Original Skew: "+skew_mapping_before.get(innerText);
+        document.getElementById("skew_transform").innerHTML = "Transformed Skew: "+skew_mapping_after.get(innerText);
         button.style.background = "#04AA6D";
         button.style.color = "white";
     });

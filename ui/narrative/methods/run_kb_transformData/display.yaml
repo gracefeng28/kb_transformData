@@ -52,6 +52,19 @@ parameters :
             Choose a name for the transformed AttributeMapping
         long-hint  : |
             Choose a name for the transformed AttributeMapping
-
+    selected_traits:
+        ui-name : |
+            Filter Outputs
+        short-hint : |
+            Select traits to filter outputs
+        long-hint  : |
+            Select the traits to apply a minimum and maximum filter to
+parameter-groups:
+    attributes_to_filter:
+        ui-name: |
+            Attributes to filter 
+        short-hint: |
+            Attributes to apply an outlier filter (min/max)
+  
 description : |
     <p>Normalization of continuous data is often a necessary step in preprocessing for Genome Wide Association Studies. Process data using one of four normalization transformations.</p>

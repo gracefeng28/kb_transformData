@@ -55,7 +55,26 @@
                     }
                 ]
             }
-        },{
+        },{ 
+            "id" : "selected_traits",
+            "optional" : false,
+            "advanced" : false,
+            "allow_multiple" : false,
+            "default_values" : [ "" ],
+            "field_type" : "textsubdata",
+            "textsubdata_options" : {
+                "subdata_selection": {
+                "parameter_id" : "phenotype_data",
+                "subdata_included" : ["attributes/[*]/attribute"],
+        "path_to_subdata": ["attributes"],
+        "selection_id" : "attribute"
+      },
+      "multiselection": false,
+      "show_src_obj":true,
+      "allow_custom":false
+    }}
+        
+        ,{
         "id": "round_degree",
         "optional": true,
         "advanced": true,
@@ -76,6 +95,18 @@
             "validate_as": "str"
         }
         }
+    ],
+    "parameter-groups": [
+    {
+        "id": "attributes_to_filter",
+        "parameters": [
+            "selected_traits"
+        ],
+        "optional": true,
+        "advanced": true,
+        "allow_multiple": true,
+        "with_border": true
+    }
     ],
     "behavior": {
         "service-mapping": {
@@ -98,6 +129,13 @@
                     "target_property": "transform_type"
                 
                 },{
+                    "input_parameter":"attributes_to_filter",
+                    "target_property":"attributes_to_filter"
+                },{
+                    "input_parameter": "selected_traits",
+                    "target_property": "selected_traits"
+                },
+                {
                     "input_parameter": "round_degree",
                     "target_property": "round_degree"
                 
