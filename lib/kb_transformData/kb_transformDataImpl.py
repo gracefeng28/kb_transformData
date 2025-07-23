@@ -86,14 +86,13 @@ class kb_transformData:
         os.mkdir(folder)
         output_mapping = AttributeMapping(folder, rd = params["round_degree"],reference_object=traits)
         if (params['transform_type']!="none"):
-
             for i in params['attributes_to_filter']:
                 if (len(i['selected_traits'])!= 0):
-                    output_mapping.filter_column(attribute=i['selected_traits'][0],min = i['min'],max = i['max'])
+                    output_mapping.filter_column(attribute=i['selected_traits'][0],minimum = i.get('min',None),maximum = i.get('max',None))
             output_mapping.run_test(params['transform_type'])
             output_mapping.save_sumstats()
         else:
-            if (len(i['selected_traits'])!= 0):
+            if (len(params['attributes_to_filter'])!= 0):
                 raise ValueError('Do not add filters while in view mode.')
         
         output_mapping.save_to_files(shared_folder=folder)
@@ -300,7 +299,7 @@ class kb_transformData:
             #print(os.listdir(output_directory))
             report_name = 'kb_transformData_report_' + str(uuid.uuid4())
             kbase_report_client = KBaseReport(self.callback_url)
-            message_in_app = f"Displaying distributions"
+            message_in_app = f"Displaying distributions. No objects were created in view mode."
             report_info = kbase_report_client.create_extended_report({
                 'message': message_in_app,
                 'direct_html_link_index': 0,

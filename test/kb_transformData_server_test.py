@@ -70,9 +70,9 @@ class kb_transformDataTest(unittest.TestCase):
                                                      'workspace_id' : '75515',
                                                      "attributes_to_filter": [{
                                                         "selected_traits": ["Mo98"],
-                                                        "min": 3
+                                                        "min": 0.3
                                                     }],
-                                                     'transform_type': 'none', 
+                                                     'transform_type': 'box-cox', 
                                                      'phenotype_data': '75515/3/1',
                                                      'round_degree': 5,
                                                      'new_file_name': 'ionomics_upload_yj'})

@@ -87,12 +87,19 @@ class AttributeMapping:
             except ValueError:
                 float_array.append(np.nan)
         filtered_nan = [x for x in float_array if not np.isnan(x)]
+        if (min(filtered_nan)<0):
+            raise ValueError(f"Cannot run Box-Cox function: {trait} data contains negative values")
         #Box-Cox requires all positive values
-        _, lmbda = stats.boxcox(filtered_nan)
+        try:
+            _, lmbda = stats.boxcox(filtered_nan)
+        except ValueError:
+            print("HERE:", filtered_nan)
+            print(trait)
+            print(data)
         #perform box cox transformation
         fitted_data = special.boxcox(float_array,lmbda)
         fitted_data = fitted_data.round(self.round_degree)
-        print(trait)
+        #print(trait)
         #print(f"Lambda value used for Transformation: {lmbda}")
         str_fitted = []
         for i in fitted_data:
@@ -105,13 +112,14 @@ class AttributeMapping:
     def run_sqrt(self,trait):
         data = list(self.df.loc[:,str(trait)])
         float_array = []
+        
         for datum in data:
             try:
                 float_array.append(float(datum))
             except ValueError:
                 float_array.append(np.nan)
-        
-        #Box-Cox requires all positive values
+        if (min(float_array)<0):
+            raise ValueError(f"Cannot run square root function: {trait} data contains negative values")
         sqrt_array = np.sqrt(float_array)
         sqrt_array = sqrt_array.round(self.round_degree)
         #perform box cox transformation
@@ -133,7 +141,8 @@ class AttributeMapping:
                 float_array.append(float(datum))
             except ValueError:
                 float_array.append(np.nan)
-        
+        if (min(float_array)<0):
+            raise ValueError(f"Cannot run log function: {trait} data contains non-positive values.")
         #Box-Cox requires all positive values
         log_array = np.log(float_array)
         log_array = log_array.round(self.round_degree)
@@ -202,51 +211,40 @@ class AttributeMapping:
     def return_to_dict(self):
         return self.df.T.to_dict('list')
     
-    def make_columns(self):
-        column_dict = {}
-        for i in range(0,len(self.headings)):
-            column = []
-            for k,v in self.output['data']['instances'].items():
-                column.append(v[i])
-            column_dict.update({self.headings[i]:column})
-
-        return column_dict
-    
-    def process_col(self, col, type_test):
-        itemset = set(col)
-        float_itemset = set(float(item) for item in itemset if item != "")
-        if (len(itemset)<=2):
-            return (False,"binary trait")
-        if (type_test == "box_cox"):
-            if (min(float_itemset)<0):
-                return (False,"negative numbers (box-cox)")
-        if (type_test == "log"):
-            if (min(float_itemset)<=0):
-                return (False,"All values must be greater than 0 (logarithmic)")
-        if (type_test == "sqrt"):
-            if (min(float_itemset)<0):
-                return (False,"All values must be at least 0 (sqrt)")
-        return (True,"passes tests")
-    def filter_column(self, attribute, min = None, max = None):
+   
+    def filter_column(self, attribute, minimum = None, maximum = None):
         data = (self.df.loc[:,str(attribute)])
+        print(type(float(x) for x in data if x != ""))
+        data_min = min(list(float(x) for x in data if x != ""))
+        data_max = max(list(float(x) for x in data if x != ""))
+        if (minimum is not None and minimum > data_max):
+            raise ValueError(f'Minimum filter greater than {attribute} data maximum value.')
+        if (maximum is not None and maximum < data_min):
+            raise ValueError(f'Maximum filter less than {attribute} data minimum value.')
+        if (minimum is not None and maximum is not None):
+            if (minimum>maximum):
+                raise ValueError(f'Minimum filter greater than maximum filter for {attribute}.')
         float_array = []
         for datum in data:
             evaluate = True
             try:
                 if (float(datum)== np.nan):
                     evaluate = False
-                if ((min is None) or float(datum)<min):
+                if ((minimum is not None) and float(datum)<minimum):
                     evaluate = False
-                if ((max is None) or float(datum)> max):
+                if ((maximum is not None) and float(datum)> maximum):
                     evaluate = False
                 if (evaluate):
                     float_array.append(float(datum))
                 else:
                     float_array.append(np.nan)
-                
             except ValueError:
                 float_array.append(np.nan)
         str_fitted = []
+        all_nan = all(math.isnan(x) for x in float_array)
+        if (all_nan):
+            raise ValueError(f"All values have been filtered out for {attribute}.")
+        print(float_array)
         for j in float_array:
             if (np.isnan(j)):
                 str_fitted.append("")
