@@ -223,8 +223,8 @@ buttons.forEach(button => {
         document.getElementById("original_label").innerHTML = "Original ("+innerText+")";
         document.getElementById("skew_original").innerHTML = "Original Skew: "+skew_mapping_before.get(innerText);
         document.getElementById("skew_transform").innerHTML = "Transformed Skew: "+skew_mapping_after.get(innerText);
-         document.getElementById("bounds_original").innerHTML = "Outlier Range: "+bounds_mapping_before.get(innerText);
-        document.getElementById("bounds_transform").innerHTML = "Outlier Range: "+bounds_mapping_after.get(innerText);
+         document.getElementById("bounds_original").innerHTML = "Potential Outlier Bounds: "+bounds_mapping_before.get(innerText);
+        document.getElementById("bounds_transform").innerHTML = "Potential Outlier Bounds: "+bounds_mapping_after.get(innerText);
         button.style.background = "#04AA6D";
         button.style.color = "white";
     });

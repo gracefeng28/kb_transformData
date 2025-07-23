@@ -93,9 +93,7 @@ class AttributeMapping:
         try:
             _, lmbda = stats.boxcox(filtered_nan)
         except ValueError:
-            print("HERE:", filtered_nan)
-            print(trait)
-            print(data)
+            raise(ValueError(f"{trait} column is empty"))
         #perform box cox transformation
         fitted_data = special.boxcox(float_array,lmbda)
         fitted_data = fitted_data.round(self.round_degree)
