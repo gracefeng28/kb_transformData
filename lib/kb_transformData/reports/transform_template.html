@@ -155,14 +155,14 @@ li {
     <div class="div1">
         <h2 id="original_label">Original</h2>
         <img class = "graph" id = "original"  src="" alt = "">
-        <h5 id="skew_original">Skew: </h5>
-        <h5 id="bounds_original">Bounds: </h5>
+        <h4 id="skew_original">Skew: </h4>
+        <h4 id="bounds_original">Bounds: </h4>
     </div>
     <div class="div1" >
         <h2 id="transform_label">Transformed (Box-Cox)</h2>
         <img class = "graph" id = "transformed" src="" alt ="">
-        <h5 id="skew_transform">Skew: </h5>
-        <h5 id="bounds_transform">Bounds: </h5>
+        <h4 id="skew_transform">Skew: </h4>
+        <h4 id="bounds_transform">Bounds: </h4>
     </div>
     
 
@@ -177,11 +177,13 @@ li {
 </div>
 
 <script>
-let message = "Transformed: " + "TRANSFORMATION_TYPE";
+let transform_type = "TRANSFORMATION_TYPE";
+let message = "Transformed: " + transform_type;
 let skew_mapping_before = new Map();
 let skew_mapping_after = new Map();
 let bounds_mapping_before = new Map();
 let bounds_mapping_after = new Map();
+let transformed_attributes = //filtered_attributes;
 //Before_code_here
 
 //After_code_here
@@ -203,11 +205,21 @@ buttons.forEach(button => {
         reset()
         console.log(this.textContent); // logs the className of my_element
         innerText = this.textContent.replaceAll(" ", "_")
+        if (transform_type == "Filtered Outliers"){
+            if (transformed_attributes.includes(innerText)){
+                document.getElementById("transform_label").innerHTML = "Filtered Outliers ("+innerText+")";
+            }
+            else{
+                document.getElementById("transform_label").innerHTML = "No Filter Applied ("+innerText+")";
+            }
+            
+        }
+
         document.getElementById("transformed").src = innerText +"_transformed"+ ".png"
         document.getElementById("original").src = innerText +"_original"+ ".png"
         document.getElementById("transformed").alt = innerText +"_transformed"+ ".png"
         document.getElementById("original").alt = innerText +"_original"+ ".png"
-        document.getElementById("transform_label").innerHTML = message + " ("+innerText+")";
+        
         document.getElementById("original_label").innerHTML = "Original ("+innerText+")";
         document.getElementById("skew_original").innerHTML = "Original Skew: "+skew_mapping_before.get(innerText);
         document.getElementById("skew_transform").innerHTML = "Transformed Skew: "+skew_mapping_after.get(innerText);

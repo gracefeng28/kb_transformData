@@ -85,10 +85,12 @@ class kb_transformData:
         folder = os.path.join(self.shared_folder,"attributes")
         os.mkdir(folder)
         output_mapping = AttributeMapping(folder, rd = params["round_degree"],reference_object=traits)
+        filtered_attributes = []
         if (params['transform_type']!="none"):
             for i in params['attributes_to_filter']:
                 if (len(i['selected_traits'])!= 0):
                     output_mapping.filter_column(attribute=i['selected_traits'][0],minimum = i.get('min',None),maximum = i.get('max',None))
+                    filtered_attributes.append(i['selected_traits'][0])
             output_mapping.run_test(params['transform_type'])
             output_mapping.save_sumstats()
         else:
@@ -144,8 +146,10 @@ class kb_transformData:
                 type_transform = "Square Root"
             elif (params["transform_type"]=="log"):
                 type_transform = "Natural Logarithm"
-            else:
+            elif (params["transform_type"]=="yeo-johnson"):
                 type_transform = "Yeo-Johnson"
+            else:
+                type_transform = "Filtered Outliers"
             valid_traits_html= ""
             not_valid_traits_html = ""
             before_dict_html = ""
@@ -180,6 +184,8 @@ class kb_transformData:
                                                             before_dict_html)
                     report_template = report_template.replace('//After_code_here',
                                                             after_dict_html)
+                    report_template = report_template.replace("//filtered_attributes",
+                                                            str(filtered_attributes))
                     result_file.write(report_template)
             result_directory = os.path.join(self.shared_folder, "attributes")
             plot_file = os.path.join(output_directory, 'transform_plot.zip')
@@ -207,7 +213,10 @@ class kb_transformData:
             #print(os.listdir(output_directory))
             report_name = 'kb_transformData_report_' + str(uuid.uuid4())
             kbase_report_client = KBaseReport(self.callback_url)
-            message_in_app = f"Successfully performed {type_transform} transformation\n"
+            if (params['transform_type']=="filter"):
+                message_in_app = f"Successfully filtered outliers.\n"
+            else:
+                message_in_app = f"Successfully performed {type_transform} transformation\n"
             report_info = kbase_report_client.create_extended_report({
                 'message': message_in_app,
                 'direct_html_link_index': 0,
@@ -249,19 +258,16 @@ class kb_transformData:
                 attribute_name = attribute_dir.replace("_"," ")
                 attribute_html += "<button id = \"option\" class = \"attributes\" >"+ attribute_name + "</button>\n"
             type_transform = ""
-            valid_traits_html= ""
+            sumstats_traits_html= ""
             not_valid_traits_html = ""
             before_dict_html = ""
             for k,v in output_mapping.get_original_sumstats().items():
                 before_dict_html+= "skew_mapping_before.set( \""+ str(k)+"\",\""+ str(v[0])+"\"); \n"
                 before_dict_html+= "bounds_mapping_before.set( \""+ str(k)+"\",\""+ str(v[1])+"\"); \n"
+                sumstats_traits_html+= f"<tr>\n<td>{k}</td>\n<td>{v[0]}</td>\n<td>{v[1]}</td>\n</tr>\n"
+
             
-            vt = output_mapping.valid_attributes
-            nvt = output_mapping.not_valid_attributes
-            for v in vt:
-                valid_traits_html += "<li>" +v+ "</li> \n"
-            for nv in nvt:
-                not_valid_traits_html += "<li>" +nv+ "</li> \n"
+            
             with open(result_file_path, 'w') as result_file:
                 with open(os.path.join(reportDirectory, 'view_template.html'),
                         'r') as report_template_file:
@@ -271,6 +277,8 @@ class kb_transformData:
                     
                     report_template = report_template.replace('//Before_code_here',
                                                             before_dict_html)
+                    report_template = report_template.replace('<p>Add Row Here</p>',
+                                                            sumstats_traits_html)
                 
                     result_file.write(report_template)
             result_directory = os.path.join(self.shared_folder, "attributes")

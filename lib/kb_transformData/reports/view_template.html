@@ -139,9 +139,14 @@ li {
 
 <div id="Overview" class="tabcontent">
     <h3>Replace this with summary statistics </h3>
-    <ul>
-        <li>Placeholder</li>
-    </ul>
+   <table style="width:100%">
+    <tr>
+        <th>Trait</th>
+        <th>Skew</th>
+        <th>Bounds</th>
+    </tr>
+    <p>Add Row Here</p>
+</table>
 </div>
 
 <div id="Visualization" class="tabcontent">
@@ -150,8 +155,8 @@ li {
     <div class="div1">
         <h2 id="original_label">View Distribution</h2>
         <img class = "graph" id = "original"  src="" alt = "">
-        <h5 id="skew_original">Skew: </h5>
-        <h5 id="bounds_original">Skew: </h5>
+        <h4 id="skew_original">Skew: </h4>
+        <h4 id="bounds_original">Skew: </h4>
     </div>
     <div id="options" class = "options">
         <!--<button id = "option" class = "attributes" >Mo98</button>-->
@@ -190,7 +195,7 @@ buttons.forEach(button => {
         document.getElementById("original").src = innerText +"_original"+ ".png"
         document.getElementById("original").alt = innerText +"_original"+ ".png"
         document.getElementById("original_label").innerHTML =  "View Distribution: ("+innerText+")";
-        document.getElementById("skew_original").innerHTML = "Original Skew: "+skew_mapping_before.get(innerText);
+        document.getElementById("skew_original").innerHTML = "Original Skew: "+skew_mapping_before.get(innerText) ;
         document.getElementById("bounds_original").innerHTML = "Outlier Bounds: "+bounds_mapping_before.get(innerText);
         button.style.background = "#04AA6D";
         button.style.color = "white";

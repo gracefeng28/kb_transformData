@@ -45,9 +45,15 @@
                 "options": [
                     {
                         "value": "none",
-                        "display": "None (View Only, no output)",
+                        "display": "No Transformation (View Only, no output)",
                         "id": "none",
-                        "ui_name": "None"
+                        "ui_name": "No Transformation (View Only, no output)"
+                    },
+                    {
+                        "value": "filter",
+                        "display": "Filter Outliers",
+                        "id": "filter",
+                        "ui_name": "Filter Outliers"
                     },
                     {
                         "value": "box-cox",
