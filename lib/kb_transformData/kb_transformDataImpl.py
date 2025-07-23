@@ -91,7 +91,8 @@ class kb_transformData:
                 if (len(i['selected_traits'])!= 0):
                     output_mapping.filter_column(attribute=i['selected_traits'][0],minimum = i.get('min',None),maximum = i.get('max',None))
                     filtered_attributes.append(i['selected_traits'][0])
-            output_mapping.run_test(params['transform_type'])
+            if (params['transform_type']!="filter"):
+                output_mapping.run_test(params['transform_type'])
             output_mapping.save_sumstats()
         else:
             if (len(params['attributes_to_filter'])!= 0):
