@@ -214,12 +214,16 @@ buttons.forEach(button => {
             }
             
         }
+        else{
+            document.getElementById("transform_label").innerHTML = message + "("+innerText+")";
+
+        }
 
         document.getElementById("transformed").src = innerText +"_transformed"+ ".png"
         document.getElementById("original").src = innerText +"_original"+ ".png"
         document.getElementById("transformed").alt = innerText +"_transformed"+ ".png"
         document.getElementById("original").alt = innerText +"_original"+ ".png"
-        
+
         document.getElementById("original_label").innerHTML = "Original ("+innerText+")";
         document.getElementById("skew_original").innerHTML = "Original Skew: "+skew_mapping_before.get(innerText);
         document.getElementById("skew_transform").innerHTML = "Transformed Skew: "+skew_mapping_after.get(innerText);

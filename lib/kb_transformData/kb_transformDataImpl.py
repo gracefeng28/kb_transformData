@@ -97,7 +97,7 @@ class kb_transformData:
             if (len(params['attributes_to_filter'])!= 0):
                 raise ValueError('Do not add filters while in view mode.')
             
-        output_mapping = AttributeMapping(folder, attribute_list= filter_attributes, rd = params["round_degree"],reference_object=traits)
+        output_mapping = AttributeMapping(shared_folder=folder, attribute_list= filter_attributes, rd = params["round_degree"],reference_object=traits)
         if (params['transform_type']!="none"):
             for i in params['attributes_to_filter']: 
                 if (len(i['selected_traits'])!= 0):
@@ -107,8 +107,11 @@ class kb_transformData:
                         #filter_attributes.append(i['selected_traits'][0])
         if (params['transform_type']!="filter" and params['transform_type']!= "none"):
             output_mapping.run_test(params['transform_type'])
-        output_mapping.save_sumstats()
-        output_mapping.save_to_files(shared_folder=folder)
+        if (params['transform_type']!= "none"):
+            output_mapping.save_sumstats()
+            output_mapping.save_to_files(shared_folder=folder)
+
+
         #print(output_mapping.return_valid())
         #saving object to workspace
         if (params['transform_type']!= "none"):
@@ -244,7 +247,6 @@ class kb_transformData:
             }
         else:
             objects_created = []
-
             logging.info("Creating Report")
             #object_reference ="75515/13/6"
         

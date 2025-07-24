@@ -30,13 +30,13 @@ class AttributeMapping:
 
         self.df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
         self.df.columns = self.headings
-        if attribute_list is not None:
+        if attribute_list is not None and len(attribute_list) !=0:
             self.df = self.df[attribute_list]
             input_list = []
             for i in attribute_list:
                 input_list.append({'attribute':i,'source':'upload'})
             self.output['data']['attributes'] = input_list
-        cols = list(self.df.columns)
+        cols = self.headings
         count = 0
         for col in cols:
             data = list(self.df.loc[:,str(col)])

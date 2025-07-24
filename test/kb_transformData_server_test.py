@@ -65,17 +65,25 @@ class kb_transformDataTest(unittest.TestCase):
         #
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods
+        #et = self.serviceImpl.run_kb_transformData(self.ctx, 
+        #                                            {'workspace_name': 'gracefeng:narrative_1751321821886',
+        #                                             'workspace_id' : '75515',
+        #                                             "attributes_to_filter": [{
+        #                                                "selected_traits": ["Mo98"],
+        #                                            
+         #                                           }, {
+         #                                               "selected_traits": ["S34"],
+         #                   
+         #                                           }],
+         #                                            'transform_type': 'box-cox', 
+         #                                            'phenotype_data': '75515/3/1',
+         #                                            'round_degree': 5,
+         #                                            'new_file_name': 'ionomics_upload_bc'})
         ret = self.serviceImpl.run_kb_transformData(self.ctx, 
                                                     {'workspace_name': 'gracefeng:narrative_1751321821886',
                                                      'workspace_id' : '75515',
-                                                     "attributes_to_filter": [{
-                                                        "selected_traits": ["Mo98"],
-                                                    
-                                                    }, {
-                                                        "selected_traits": ["S34"],
-                            
-                                                    }],
-                                                     'transform_type': 'box-cox', 
+                                                     "attributes_to_filter": [],
+                                                     'transform_type': 'none', 
                                                      'phenotype_data': '75515/3/1',
                                                      'round_degree': 5,
-                                                     'new_file_name': 'ionomics_upload_bc'})
+                                                     'new_file_name': ''})
