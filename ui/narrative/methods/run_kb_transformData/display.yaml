@@ -31,13 +31,6 @@ parameters :
             An AttributeMapping of the phenotype to be normalized
         long-hint  : |
             An AttributeMapping of the phenotype to be normalized
-    transform_type :
-        ui-name : |
-            Choose transformation type
-        short-hint : |
-            Choose from these normalization methods: box-cox, square root, or logarithmic
-        long-hint  : |
-            Choose from these normalization methods: box-cox, square root, or logarithmic
     round_degree :
         ui-name : |
             Rounding Degree
@@ -52,6 +45,13 @@ parameters :
             Choose a name for the transformed AttributeMapping
         long-hint  : |
             Choose a name for the transformed AttributeMapping
+    transform_type :
+        ui-name : |
+            Choose Transformation
+        short-hint : |
+            Choose from four transformations: box-cox, square root, natural logarithm, or yeo-johnson 
+        long-hint  : |
+            Choose from four transformations: box-cox, square root, natural logarithm, or yeo-johnson  
     selected_traits:
         ui-name : |
             Filter Outputs

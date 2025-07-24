@@ -69,7 +69,7 @@ class kb_transformData:
         if 'phenotype_data' not in params:
             raise ValueError('Phenotype Data Kbase reference is not set')
         if 'transform_type' not in params:
-            raise ValueError('Transformation type is not selected.')
+            raise ValueError('transform_type is not selected.')
         if 'new_file_name' == "":
             params.update({'new_file_name':"traits_"+params['transform_type']})
         #w = Workspace(self.callback_url)
@@ -77,27 +77,31 @@ class kb_transformData:
 
         logging.info("Downloading phenotype data from shock.")
         df = DataFileUtil(self.callback_url)
-        
         traits = df.get_objects({'object_refs': [params["phenotype_data"]]})['data'][0]
         #trait_obj = traits['data']
         #trait_meta = traits['info'][10]
         #create new attribute mapping with same data
         folder = os.path.join(self.shared_folder,"attributes")
         os.mkdir(folder)
-        output_mapping = AttributeMapping(folder, rd = params["round_degree"],reference_object=traits)
-        filtered_attributes = []
+        filter_attributes = []
         if (params['transform_type']!="none"):
             for i in params['attributes_to_filter']:
                 if (len(i['selected_traits'])!= 0):
-                    output_mapping.filter_column(attribute=i['selected_traits'][0],minimum = i.get('min',None),maximum = i.get('max',None))
-                    filtered_attributes.append(i['selected_traits'][0])
-            if (params['transform_type']!="filter"):
-                output_mapping.run_test(params['transform_type'])
-            output_mapping.save_sumstats()
+                    #output_mapping.filter_column(attribute=i['selected_traits'][0],minimum = i.get('min',None),maximum = i.get('max',None))
+                    filter_attributes.append(i['selected_traits'][0])
         else:
             if (len(params['attributes_to_filter'])!= 0):
                 raise ValueError('Do not add filters while in view mode.')
-        
+            
+        output_mapping = AttributeMapping(folder, attribute_list= filter_attributes, rd = params["round_degree"],reference_object=traits)
+        if (params['transform_type']!="none"):
+            for i in params['attributes_to_filter']: 
+                if (len(i['selected_traits'])!= 0):
+                        output_mapping.filter_column(attribute=i['selected_traits'][0],minimum = i.get('min',None),maximum = i.get('max',None))
+                        #filter_attributes.append(i['selected_traits'][0])
+        if (params['transform_type']!="filter" and params['transform_type']!= "none"):
+            output_mapping.run_test(params['transform_type'])
+        output_mapping.save_sumstats()
         output_mapping.save_to_files(shared_folder=folder)
         #print(output_mapping.return_valid())
         #saving object to workspace
@@ -186,7 +190,7 @@ class kb_transformData:
                     report_template = report_template.replace('//After_code_here',
                                                             after_dict_html)
                     report_template = report_template.replace("//filtered_attributes",
-                                                            str(filtered_attributes))
+                                                            str(filter_attributes))
                     result_file.write(report_template)
             result_directory = os.path.join(self.shared_folder, "attributes")
             plot_file = os.path.join(output_directory, 'transform_plot.zip')

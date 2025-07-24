@@ -11,7 +11,7 @@ from sklearn.preprocessing import PowerTransformer
 
 class AttributeMapping:
 
-    def __init__(self, shared_folder,rd = 4, reference_object = None):
+    def __init__(self, shared_folder, attribute_list = None,rd = 4, reference_object = None):
         self.output = {}
         self.headings = []
         self.instances = {}
@@ -24,13 +24,18 @@ class AttributeMapping:
         self.round_degree = rd
         for key,value in reference_object.items():
             self.output.update({key: value})
-        
         for element in self.output['data']['attributes']:
             self.headings.append(element['attribute'])
         self.instances = self.output['data']['instances']
 
         self.df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
         self.df.columns = self.headings
+        if attribute_list is not None:
+            self.df = self.df[attribute_list]
+            input_list = []
+            for i in attribute_list:
+                input_list.append({'attribute':i,'source':'upload'})
+            self.output['data']['attributes'] = input_list
         cols = list(self.df.columns)
         count = 0
         for col in cols:
@@ -165,7 +170,6 @@ class AttributeMapping:
     def run_test(self, test_type):
         #df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
         #df.columns = self.headings
-        
         cols = list(self.df.columns)
         input_list = []
         
@@ -212,7 +216,7 @@ class AttributeMapping:
    
     def filter_column(self, attribute, minimum = None, maximum = None):
         data = (self.df.loc[:,str(attribute)])
-        print(type(float(x) for x in data if x != ""))
+        #print(type(float(x) for x in data if x != ""))
         data_min = min(list(float(x) for x in data if x != ""))
         data_max = max(list(float(x) for x in data if x != ""))
         if (minimum is not None and minimum > data_max):

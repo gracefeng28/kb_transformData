@@ -45,15 +45,14 @@
                 "options": [
                     {
                         "value": "none",
-                        "display": "No Transformation (View Only, no output)",
+                        "display": "View Only (no output)",
                         "id": "none",
-                        "ui_name": "No Transformation (View Only, no output)"
-                    },
-                    {
+                        "ui_name": "View Only (no output)"
+                    },{
                         "value": "filter",
-                        "display": "Filter Outliers",
+                        "display": "Filter Outliers Only",
                         "id": "filter",
-                        "ui_name": "Filter Outliers"
+                        "ui_name": "Filter Outliers Only"
                     },
                     {
                         "value": "box-cox",
@@ -69,9 +68,9 @@
                     },
                     {
                         "value": "log",
-                        "display": "Logarithmic",
+                        "display": "Natural Logarithm",
                         "id": "log",
-                        "ui_name": "Logarithmic"
+                        "ui_name": "Natural Logarithm"
                     },
                     {
                         "value": "yeo-johnson",
@@ -79,9 +78,11 @@
                         "id": "yeo-johnson",
                         "ui_name": "Yeo-Johnson"
                     }
+
                 ]
             }
-        },{ 
+        },
+        { 
             "id" : "selected_traits",
             "optional" : false,
             "advanced" : false,
