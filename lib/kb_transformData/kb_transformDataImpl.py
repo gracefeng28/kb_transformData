@@ -72,6 +72,10 @@ class kb_transformData:
             raise ValueError('transform_type is not selected.')
         if 'new_file_name' == "":
             params.update({'new_file_name':"traits_"+params['transform_type']})
+        if params['transform_type'] != "none":
+            if (len(params['attributes_to_filter'])==0):
+                raise ValueError('No phenotypes are selected')
+            
         #w = Workspace(self.callback_url)
         #print(w.get_workspace_description('gracefeng:narrative_1751308811409'))
 
@@ -98,6 +102,8 @@ class kb_transformData:
             for i in params['attributes_to_filter']: 
                 if (len(i['selected_traits'])!= 0):
                         output_mapping.filter_column(attribute=i['selected_traits'][0],minimum = i.get('min',None),maximum = i.get('max',None))
+                else:
+                    raise ValueError(f"Missing a phenotype field.")
                         #filter_attributes.append(i['selected_traits'][0])
         if (params['transform_type']!="filter" and params['transform_type']!= "none"):
             output_mapping.run_test(params['transform_type'])

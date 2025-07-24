@@ -4,9 +4,10 @@
 name: Normalize Phenotypes for GWAS
 
 tooltip: |
-    Normalizes continuous phenotypic data
+    Normalize data and remove outliers for continuous phenotypes
 
-screenshots: []
+screenshots: 
+    - output.png
 
 icon: icon.png
 
@@ -81,4 +82,5 @@ parameter-groups:
             Attributes to apply an outlier filter (min/max)
   
 description : |
-    <p>Normalization of continuous data is often a necessary step in preprocessing for Genome Wide Association Studies. Process data using one of four normalization transformations.</p>
+    <p>Normalization of continuous data is often a necessary step in preprocessing for Genome Wide Association Studies.</p>
+    <p>The tool features a View Only mode to allow the phenotype distributions to be viewed before transforming. Outliers can then be manually removed. The app rocess phenotypes by using one of four normalization transformations. </p>
