@@ -36,6 +36,11 @@ class AttributeMapping:
             for i in attribute_list:
                 input_list.append({'attribute':i,'source':'upload'})
             self.output['data']['attributes'] = input_list
+            self.headings = []
+            for element in self.output['data']['attributes']:
+                self.headings.append(element['attribute'])
+
+
         cols = self.headings
         count = 0
         for col in cols:
