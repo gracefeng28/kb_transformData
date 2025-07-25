@@ -11,6 +11,11 @@ screenshots:
 
 icon: icon.png
 
+publications :
+    -
+        display-text: |
+            Virtanen, P., Gommers, R., et.al. SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python. Nature Methods, 2020;17: 261-272. DOI: 10.1038/s41592-019-0686-2
+        link: Link associated with publication
 #
 # define a set of similar apps that might be useful to the user
 #
@@ -64,16 +69,16 @@ parameters :
         ui-name : |
             Min Value
         short-hint : |
-            Min Value
+            Minimum Value Threshold 
         long-hint  : |
-            Min Value
+            Minimum Value Threshold 
     max:
         ui-name : |
             Max Value
         short-hint : |
-            Max Value
+            Maximum Value Threshold for Phenotype
         long-hint  : |
-            Max Value
+            Maximum Value Threshold for Phenotype
 parameter-groups:
     attributes_to_filter:
         ui-name: |
@@ -82,5 +87,6 @@ parameter-groups:
             Attributes to apply an outlier filter (min/max)
   
 description : |
-    <p>Normalization of continuous data is often a necessary step in preprocessing for Genome Wide Association Studies.</p>
-    <p>The tool features a View Only mode to allow the phenotype distributions to be viewed before transforming. Outliers can then be manually removed. The app rocess phenotypes by using one of four normalization transformations. </p>
+    <p>Normalization of continuous data is an often necessary step in the preprocessing stage for Genome Wide Association Studies.</p>
+    <p>The Normalize Phenotypes for GWAS App features allows users to first view the distributions with histograms, and then rerun the app to trim outliers or perform normalization transformations such as Box-Cox, square root, natural logarithm, and Yeo-Johnson.</p>
+    <p>When not in View Only mode, the app returns an attribute mapping with only the selected phenotypes that have been edited by the app. 
