@@ -14,8 +14,12 @@ icon: icon.png
 publications :
     -
         display-text: |
-            Virtanen, P., Gommers, R., et.al. SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python. Nature Methods, 2020;17: 261-272. DOI: 10.1038/s41592-019-0686-2
-        link: Link associated with publication
+            Virtanen, P., Gommers, R., et al. SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python. Nature Methods, 2020;17: 261-272. DOI: 10.1038/s41592-019-0686-2
+        link: https://doi.org/10.1038/s41592-019-0686-2
+    -
+        display-text: |
+            Pedregosa, F., Varoquaux, G., et al. Scikit-learn: Machine Learning in Python. Journal of Machine Learning Research, 2011;12: 2825--2830.
+        link: https://jmlr.csail.mit.edu/papers/v12/pedregosa11a.html
 #
 # define a set of similar apps that might be useful to the user
 #
@@ -87,6 +91,6 @@ parameter-groups:
             Attributes to apply an outlier filter (min/max)
   
 description : |
-    <p>Normalization of continuous data is an often necessary step in the preprocessing stage for Genome Wide Association Studies.</p>
-    <p>The Normalize Phenotypes for GWAS App features allows users to first view the distributions with histograms, and then rerun the app to trim outliers or perform normalization transformations such as Box-Cox, square root, natural logarithm, and Yeo-Johnson.</p>
-    <p>When not in View Only mode, the app returns an attribute mapping with only the selected phenotypes that have been edited by the app. 
+    <p>Normalization of continuous data is often a necessary step in the preprocessing stage for Genome Wide Association Studies.</p>
+    <p>The Normalize Phenotypes for GWAS App allows users to first view the distributions through histograms, and then rerun the app to trim outliers or perform normalization transformations such as Box-Cox, square root, natural logarithm, and Yeo-Johnson.</p>
+    <p>When not in View Only mode, the app returns an Attribute Mapping with only the selected phenotypes that have been edited by the app. 
