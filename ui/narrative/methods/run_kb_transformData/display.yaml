@@ -61,9 +61,9 @@ parameters :
         ui-name : |
             Choose Transformation
         short-hint : |
-            Choose from five transformations: box-cox, square root, natural logarithm, or yeo-johnson 
+            Choose from five transformations: box-cox, square root, natural logarithm, exponential, or yeo-johnson 
         long-hint  : |
-            Choose from five transformations: box-cox, square root, natural logarithm, or yeo-johnson  
+            Choose from five transformations: box-cox, square root, natural logarithm,exponential, or yeo-johnson  
     selected_traits:
         ui-name : |
             Filter Outputs
@@ -94,7 +94,7 @@ parameter-groups:
   
 description : |
     <p>Normalization of continuous data is often a necessary step in the preprocessing stage for Genome Wide Association Studies.</p>
-    <p>The Normalize Phenotypes for GWAS App allows users to first view the distributions through histograms, and then rerun the app to trim outliers or perform normalization transformations such as Box-Cox, square root, natural logarithm, and Yeo-Johnson. When not in View Only mode, the app returns an Attribute Mapping with only the selected phenotypes that have been edited by the app. </p>
+    <p>The Normalize Phenotypes for GWAS App allows users to first view the distributions through histograms, and then rerun the app to trim outliers or perform normalization transformations such as Box-Cox, square root, natural logarithm, exponential, and Yeo-Johnson. When not in View Only mode, the app returns an Attribute Mapping with only the selected phenotypes that have been edited by the app. </p>
     <table>
         <tr>
             <th>Data Value Characteristics</th>
