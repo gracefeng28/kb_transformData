@@ -9,7 +9,7 @@ tooltip: |
 screenshots: 
     - output.png
 
-icon: icon.png
+icon: app_icon.png
 
 publications :
     -
