@@ -162,6 +162,8 @@ class kb_transformData:
                 type_transform = "Natural Logarithm"
             elif (params["transform_type"]=="yeo-johnson"):
                 type_transform = "Yeo-Johnson"
+            elif (params["transform_type"]=="exp"):
+                type_transform = "Exponential"
             else:
                 type_transform = "Filtered Outliers"
             valid_traits_html= ""

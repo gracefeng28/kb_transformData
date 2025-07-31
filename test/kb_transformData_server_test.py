@@ -72,8 +72,8 @@ class kb_transformDataTest(unittest.TestCase):
                                                         "selected_traits": ["Mo98"],
                                                     
                                                     }],
-                                                     'transform_type': 'box-cox', 
+                                                     'transform_type': 'exp', 
                                                      'phenotype_data': '75515/3/1',
                                                      'round_degree': 5,
-                                                     'new_file_name': 'ionomics_upload_bc'})
+                                                     'new_file_name': 'ionomics_upload_exp'})
         

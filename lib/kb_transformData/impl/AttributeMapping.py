@@ -12,6 +12,7 @@ from sklearn.preprocessing import PowerTransformer
 class AttributeMapping:
 
     def __init__(self, shared_folder, attribute_list = None,rd = 4, reference_object = None):
+        #instance variables
         self.output = {}
         self.headings = []
         self.instances = {}
@@ -22,14 +23,16 @@ class AttributeMapping:
         self.sumstats_dict_original = {}
         self.sumstats_dict_transform = {}
         self.round_degree = rd
+        #copy data from reference to new object
         for key,value in reference_object.items():
             self.output.update({key: value})
         for element in self.output['data']['attributes']:
             self.headings.append(element['attribute'])
         self.instances = self.output['data']['instances']
-
+        #create a dataframe for inner data (easier to perform column transformations)
         self.df = pd.DataFrame.from_dict(self.output['data']['instances'], orient='index')
         self.df.columns = self.headings
+        #keep only selected attributes when in Edit Mode
         if attribute_list is not None and len(attribute_list) !=0:
             self.df = self.df[attribute_list]
             input_list = []
@@ -40,7 +43,7 @@ class AttributeMapping:
             for element in self.output['data']['attributes']:
                 self.headings.append(element['attribute'])
 
-
+        #Determine continuous traits and binary traits
         cols = self.headings
         count = 0
         for col in cols:
@@ -58,38 +61,22 @@ class AttributeMapping:
                 self.valid_attributes.append(col)
             else:
                 self.not_valid_attributes.append(col)
+        #save original distributions and original summary statistics
         self.save_sumstats()
         self.save_to_files(shared_folder)
         
-    def print_heading(self):
-        print(self.headings)
-
     def get_keys(self):
         output = []
         for k in self.output.keys():
             output.append(k)
         return output
     
-    def show_object(self):
-       layer1= self.output.keys()
-       print(layer1)
-       layer1_obj = self.output['data']
-       layer1_meta = self.output['info'][10]
-       print("NEW OBJECT: \n")
-       print(layer1_obj.keys())
-       print(type(layer1_obj["instances"]))
-       print(type(layer1_obj["attributes"]))
-       for i in layer1_obj["attributes"]:
-           print(i)
-       print(layer1_obj["instances"]["BESC-109"])
-       print(layer1_obj['ontology_mapping_method'])
-
-    
-
     def get_dict(self):
         return self.output['data']
+    
     def run_boxcox(self,trait):
         data = list(self.df.loc[:,str(trait)])
+        #remove all nan values 
         float_array = []
         for datum in data:
             try:
@@ -117,6 +104,7 @@ class AttributeMapping:
                 str_fitted.append(str(i))
         self.transform_type = "box-cox"
         return str_fitted
+    
     def run_sqrt(self,trait):
         data = list(self.df.loc[:,str(trait)])
         float_array = []
@@ -151,7 +139,6 @@ class AttributeMapping:
                 float_array.append(np.nan)
         if (min(float_array)<0):
             raise ValueError(f"Cannot run log function: {trait} data contains non-positive values.")
-        #Box-Cox requires all positive values
         log_array = np.log(float_array)
         log_array = log_array.round(self.round_degree)
         #perform box cox transformation
@@ -164,6 +151,28 @@ class AttributeMapping:
             else:
                 str_fitted.append(str(i))
         self.transform_type = "log"
+        return str_fitted
+    def run_exp(self,trait):
+        data = list(self.df.loc[:,str(trait)])
+        float_array = []
+        for datum in data:
+            try:
+                float_array.append(float(datum))
+            except ValueError:
+                float_array.append(np.nan)
+        
+        #Box-Cox requires all positive values
+        exp_array = np.exp(float_array)
+        exp_array = exp_array.round(self.round_degree)
+        #perform box cox transformation
+        print(trait)
+        str_fitted = []
+        for i in exp_array:
+            if (np.isnan(i)):
+                str_fitted.append("")
+            else:
+                str_fitted.append(str(i))
+        self.transform_type = "exp"
         return str_fitted
     def run_yeo_johnson(self, input_list):
         pt = PowerTransformer(method='yeo-johnson')
@@ -207,10 +216,15 @@ class AttributeMapping:
                         new_col = self.run_boxcox(col)
                     elif (test_type == "sqrt"):
                         new_col = self.run_sqrt(col)
-                    else:
+                    elif (test_type == "log"):
                         new_col = self.run_log(col)
+                    elif (test_type == "exp"):
+                        new_col = self.run_exp(col)
+                    else:
+                        raise ValueError(f"{test_type} is not a valid test type")
                     self.df[col] = new_col
         self.output['data']['instances'] = self.return_to_dict()
+
     def return_not_valid(self):
         return self.not_valid_attributes
     def return_valid(self):

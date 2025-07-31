@@ -71,6 +71,11 @@
                         "display": "Natural Logarithm",
                         "id": "log",
                         "ui_name": "Natural Logarithm"
+                    },{
+                        "value": "exp",
+                        "display": "Exponential",
+                        "id": "exp",
+                        "ui_name": "Exponential"
                     },
                     {
                         "value": "yeo-johnson",

@@ -7,7 +7,9 @@ tooltip: |
     Normalize data and remove outliers for continuous phenotypes
 
 screenshots: 
-    - output.png
+    - tutorial1.png
+    - tutorial2.png
+    - tutorial3.png
 
 icon: app_icon.png
 
@@ -50,18 +52,18 @@ parameters :
             How many digits should the transformed values be rounded to
     new_file_name:
         ui-name : |
-            Output file name
+            Output object name
         short-hint : |
-            Choose a name for the transformed AttributeMapping
+            Choose a name for the transformed AttributeMapping. This field is REQUIRED when not in "View Only" mode
         long-hint  : |
-            Choose a name for the transformed AttributeMapping
+            Choose a name for the transformed AttributeMapping. This field is REQUIRED when not in "View Only" mode
     transform_type :
         ui-name : |
             Choose Transformation
         short-hint : |
-            Choose from four transformations: box-cox, square root, natural logarithm, or yeo-johnson 
+            Choose from five transformations: box-cox, square root, natural logarithm, or yeo-johnson 
         long-hint  : |
-            Choose from four transformations: box-cox, square root, natural logarithm, or yeo-johnson  
+            Choose from five transformations: box-cox, square root, natural logarithm, or yeo-johnson  
     selected_traits:
         ui-name : |
             Filter Outputs
@@ -93,4 +95,33 @@ parameter-groups:
 description : |
     <p>Normalization of continuous data is often a necessary step in the preprocessing stage for Genome Wide Association Studies.</p>
     <p>The Normalize Phenotypes for GWAS App allows users to first view the distributions through histograms, and then rerun the app to trim outliers or perform normalization transformations such as Box-Cox, square root, natural logarithm, and Yeo-Johnson.</p>
-    <p>When not in View Only mode, the app returns an Attribute Mapping with only the selected phenotypes that have been edited by the app. 
+    <p>When not in View Only mode, the app returns an Attribute Mapping with only the selected phenotypes that have been edited by the app. </p>
+    <table>
+    <tr>
+        <th>Data Characteristics</th>
+        <th>Skew Direction</th>
+        <th>Recommended Transformations</th>
+        
+    </tr>
+    <tr>
+        <td>Positive-only values</td>
+        <td>Positive skew (Right)</td>
+        <td>Box-Cox</td>
+    </tr>
+    <tr>
+        <td>Positive-only values</td>
+        <td>Negative Skew (Left)</td>
+        <td>Exponential</td>
+    </tr>
+    <tr>
+        <td>Zero or Negative Values</td>
+        <td>Positive skew (Right)</td>
+        <td>Yeo-Johnson/td>
+    </tr>
+    <tr>
+        <td>Zero or Negative Values</td>
+        <td>Negative Skew (Left)</td>
+        <td>Yeo-Johnson/td>
+    </tr>
+    </table>
+
