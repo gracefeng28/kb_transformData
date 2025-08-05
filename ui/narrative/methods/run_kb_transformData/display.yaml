@@ -97,8 +97,8 @@ description : |
     <p>The Normalize Phenotypes for GWAS App allows users to first view the distributions through histograms, and then rerun the app to trim outliers or perform normalization transformations such as Box-Cox, square root, natural logarithm, exponential, and Yeo-Johnson. When not in View Only mode, the app returns an Attribute Mapping with only the selected phenotypes that have been edited by the app. </p>
     <table>
         <tr>
-            <th>Data Value Characteristics</th>
-            <th>Skew Direction</th>
+            <th style = "padding-left: 5px;">Data Value Characteristics</th>
+            <th style = "padding-left: 5px;">Skew Direction</th>
             <th>Recommended Transformations</th>
             
         </tr>
@@ -118,7 +118,7 @@ description : |
             <td>Yeo-Johnson</td>
         </tr>
         <tr>
-            <td>Zero/Negative/td>
+            <td>Zero/Negative</td>
             <td>Negative (Left)</td>
             <td>Yeo-Johnson</td>
         </tr>
